@@ -1,5 +1,5 @@
-This repo is made while motivation and reference from `Solcurity` by ser `transmissions11`
-Only and maindifference is that I am updating everyday 🫡 
+This repo is made while motivation and reference from `Solcurity` by ser `transmissions11`.<br>
+Only difference is that I am updating everyday 🫡 
 
 
 ### General Review Approach:
