@@ -1,4 +1,4 @@
-This repo is made while motivation and reference from `Solcurity` by ser `transmissions11`.<br>
+This repo is made with motivation and reference from `Solcurity` by ser `transmissions11`.<br>
 Only difference is that I am updating everyday 🫡 
 
 
