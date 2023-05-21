@@ -193,8 +193,8 @@ Only difference is that I am updating everyday 🫡
 - `D9` - Watch out for tokens that use too many or too few decimals. Ensure the max and min supported values are documented.
 - `D10` - Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
 - `D11` - If your contract is a target for token approvals, do not make arbitrary calls from user input.
+- `D12` - Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
 
 ## Reverts
 
 - `E1` - Always choose wisely between when to use `revert` or `error` or `bool`, you can convert bool to revert by using `require`
-- 
