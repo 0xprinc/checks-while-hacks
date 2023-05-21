@@ -129,6 +129,7 @@ Only difference is that I am updating everyday 🫡
 - `C50` - Use ternary expressions to simplify branching logic wherever possible.
 - `C51` - When operating on more than one address, ask yourself what happens if they're the same.
 - `C52` - Can someone without spending other then gas fees change the state of the contract.
+- `C53` - Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
 
 ## External Calls
 
