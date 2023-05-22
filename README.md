@@ -1,8 +1,8 @@
 This repo is made with motivation and reference from `Solcurity` by ser `transmissions11`.<br>
 Only difference is that I am updating everyday 🫡 
 
-#### Resources added to this list 
-- [x] Secureum Audit Findings 101 
+#### Resources to be added to this list 
+- [ ] Secureum Audit Findings 101 
 - [ ] Secureum Audit Findings 201 
 
 
