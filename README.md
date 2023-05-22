@@ -130,6 +130,9 @@ Only difference is that I am updating everyday 🫡
 - `C51` - When operating on more than one address, ask yourself what happens if they're the same.
 - `C52` - Can someone without spending other then gas fees change the state of the contract.
 - `C53` - Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
+- `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not sconsistent with             the value they return(some return the bool while others revert which can cause problems)
+- `C55` - Similiar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
+- `C56` - 
 
 ## External Calls
 
