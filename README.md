@@ -14,6 +14,8 @@ Only difference is that I am updating everyday 🫡
 - Glance over the contracts to get a sense of the project's architecture. Tools like Surya can come in handy.
 - Compare the architecture to your mental model. Look into areas that are surprising.
 - Create a threat model and make a list of theoretical high level attack vectors.
+- Identify the various entities(variables to store some value, governance entity etc.) that are involved in the contract
+- List the permissions and barriers that are present with those entities and how they can cross their barriers and also misuse their permissions
 - Look at areas that can do value exchange. Especially functions like `transfer`, `transferFrom`, `send`, `call`, `delegatecall`, and `selfdestruct`. Walk backward from them to ensure they are secured properly.
 - Look at areas that interface with external contracts and ensure all assumptions about them are valid like share price only increases, etc.
 - Do a generic line-by-line review of the contracts.
@@ -21,6 +23,7 @@ Only difference is that I am updating everyday 🫡
 - Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
 - Run tools like Slither/Solhint and review their output.
 - Look at related projects and their audits to check for any similar issues or oversights.
+- Try to figure out as many as expected invariants in the contract after getting its context.
 
 ## General entity
 - `g1` - Will the contract run the same if this entity is removed?
