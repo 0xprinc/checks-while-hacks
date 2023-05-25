@@ -1,5 +1,5 @@
 This repo is made with motivation and reference from `Solcurity` by ser `transmissions11`.<br>
-Only difference is that I am updating everyday 🫡 
+``` Only difference is that I am updating everyday 🫡 ```
 
 #### Resources to be added to this list 
 - [ ] Quillhash - Solidit Attack Vectors
