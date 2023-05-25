@@ -137,7 +137,12 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not sconsistent with             the value they return(some return the bool while others revert which can cause problems)
 - `C55` - Similiar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
 - `C56` - Don't use extcodesize to gain the knowledge of whether the msg.sender is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
-- `C57` - 
+- `C57` - Try to monitor the expected and actual length of the array.
+- `C58` - Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
+- `C59` - Making a new owner is a crucial think, so a new function to accept the ownership should be made so that the ownership dont go in the hands of some wrong person or a smart contract which can not do anything.
+- `C60` - In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
+- `C61` - don't use erecver and signature to verify the user as these cause signature malleability.
+- 
 
 ## External Calls
 
@@ -152,7 +157,8 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `X9` - Its best to be stateless while doing an external delegate call.
 - `X10` - Always assume that the external call will fail, now code accordingly.
 - `X11` - Try avoiding taking arbitrary input or acalldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
-- `X12` - 
+- `X12` - The external calls from a contract can be made to be failed adn still be made the function continue to act if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.
+- 
 
 ## Static Calls
 
@@ -185,7 +191,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `T10` - Always use the named import syntax to explicitly declare which contracts are being imported from another file.
 - `T11` - Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
 - `T12` - Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
-- `T13` - 
+- `T13` - Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
 
 ## Project
 
@@ -210,7 +216,5 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `D10` - Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
 - `D11` - If your contract is a target for token approvals, do not make arbitrary calls from user input.
 - `D12` - Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
-
-## Reverts
 
 - `E1` - Always choose wisely between when to use `revert` or `error` or `bool`, you can convert bool to revert by using `require`
