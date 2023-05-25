@@ -136,7 +136,8 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `C53` - Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
 - `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not sconsistent with             the value they return(some return the bool while others revert which can cause problems)
 - `C55` - Similiar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
-- `C56` - 
+- `C56` - Don't use extcodesize to gain the knowledge of whether the msg.sender is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
+- `C57` - 
 
 ## External Calls
 
@@ -148,6 +149,10 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `X6` - What if it uses all the gas provided?
 - `X7` - Could it cause an out-of-gas in the calling contract if it returns a massive amount of data?
 - `X8` - If you are calling a particular function, do not assume that `success` implies that the function exists (phantom functions).
+- `X9` - Its best to be stateless while doing an external delegate call.
+- `X10` - Always assume that the external call will fail, now code accordingly.
+- `X11` - Try avoiding taking arbitrary input or acalldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
+- `X12` - 
 
 ## Static Calls
 
@@ -164,6 +169,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `E4` - Is when the event emitted and all fields documented using natspec?
 - `E5` - Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
 - `E6` - Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
+- `E7` - 
 
 ## Contract
 
@@ -179,6 +185,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `T10` - Always use the named import syntax to explicitly declare which contracts are being imported from another file.
 - `T11` - Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
 - `T12` - Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
+- `T13` - 
 
 ## Project
 
@@ -187,6 +194,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `P3` - Fuzz test as much as possible.
 - `P4` - Use symbolic execution where possible.
 - `P5` - Run Slither/Solhint and review all findings.
+- `P5` - 
 
 ## DeFi
 
