@@ -157,8 +157,8 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `X9` - Its best to be stateless while doing an external delegate call.
 - `X10` - Always assume that the external call will fail, now code accordingly.
 - `X11` - Try avoiding taking arbitrary input or acalldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
-- `X12` - The external calls from a contract can be made to be failed adn still be made the function continue to act if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.
-- 
+- `X12` - The external calls from a contract can be made to be failed and still be made the function continue to act if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Griefing)
+- `X13` - 
 
 ## Static Calls
 
