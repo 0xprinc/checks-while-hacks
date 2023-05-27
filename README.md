@@ -2,7 +2,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 ``` Only difference is that I am updating everyday 🫡 ```
 
 #### Resources to be added to this list 
-- [ ] Quillhash - Solidit Attack Vectors
+- [x] Quillhash - Solidit Attack Vectors
 - [ ] Secureum Audit Findings 101 
 - [ ] Secureum Audit Findings 201 
 
@@ -24,6 +24,8 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - Run tools like Slither/Solhint and review their output.
 - Look at related projects and their audits to check for any similar issues or oversights.
 - Try to figure out as many as expected invariants in the contract after getting its context.
+- Try to avoid transaction order dependence in the code or find a way to deal with it.
+- 
 
 ## General entity
 - `g1` - Will the contract run the same if this entity is removed?
@@ -45,6 +47,8 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `V8` - Use full 256 bit types unless packing with other variables.
 - `V9` - If it's a public array, is a separate function provided to return the full array?
 - `V10` - Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+- `V11` - Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory.
+- `V12` - 
 
 ## Structs
 
@@ -193,6 +197,9 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `T11` - Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
 - `T12` - Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
 - `T13` - Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
+- `T14` - Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
+          (diamond problem)
+- `T15` - 
 
 ## Project
 
