@@ -2,7 +2,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 ``` Only difference is that I am updating everyday 🫡 ```
 
 #### Resources to be added to this list 
-- [x] Quillhash - Solidit Attack Vectors
+- [x] Quillhash - Solidity Attack Vectors
 - [ ] Secureum Audit Findings 101 
 - [ ] Secureum Audit Findings 201 
 
