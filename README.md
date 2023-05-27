@@ -142,6 +142,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `C59` - Making a new owner is a crucial think, so a new function to accept the ownership should be made so that the ownership dont go in the hands of some wrong person or a smart contract which can not do anything.
 - `C60` - In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
 - `C61` - don't use erecver and signature to verify the user as these cause signature malleability.
+- `C62` - delete every entry of the mapping before deleting the mapping itself, otherwose the getter function will still work by giving all the mapping values
 - 
 
 ## External Calls
