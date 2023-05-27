@@ -147,7 +147,7 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 - `C60` - In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
 - `C61` - don't use erecver and signature to verify the user as these cause signature malleability.
 - `C62` - delete every entry of the mapping before deleting the mapping itself, otherwose the getter function will still work by giving all the mapping values
-- 
+- `C63` - look out for signature replay attacks.
 
 ## External Calls
 
