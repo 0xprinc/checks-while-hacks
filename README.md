@@ -2,8 +2,9 @@ This repo is made with motivation and reference from `Solcurity` by ser `transmi
 ``` Only difference is that I am updating everyday 🫡 ```
 
 #### Resources to be added to this list 
-- [x] Quillhash - Solidity Attack Vectors
-- [ ] Secureum Audit Findings 101 
+- [x] Solcurity by ser transmissions11
+- [x] Solidity Attack Vectors (Quillhash)
+- [ ] Secureum Audit Findings 101 (currently working)
 - [ ] Secureum Audit Findings 201 
 
 
