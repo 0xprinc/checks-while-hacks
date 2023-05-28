@@ -1,12 +1,13 @@
-This repo is made with motivation and reference from `Solcurity` by ser `transmissions11`.<br>
-``` Only difference is that I am updating everyday 🫡 ```
+## checks while hacks
+This repository contains my ultimate solidity attack vectors compilation. 
+I will be compiling all solidity attack vectors that I come across with.
 
-#### Resources to be added to this list 
-- [x] Solcurity by ser transmissions11
-- [x] Solidity Attack Vectors (Quillhash)
-- [ ] Secureum Audit Findings 101 (currently working)
-- [ ] Secureum Audit Findings 201 
-
+#### To-Do List
+- [x] `Solcurity` by `transmissions11`
+- [x] Solidity Attack Vectors `Quillhash`
+- [ ] `Secureum Audit Findings 101` (currently working)
+- [ ] `Secureum Audit Findings 201` 
+- [ ] `Solidity Lab` by Guardian Audits
 
 
 ### General Review Approach:
