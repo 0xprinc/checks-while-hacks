@@ -1,8 +1,9 @@
 ## checks while hacks
-This repository contains my ultimate solidity attack vectors compilation. 
-I will be compiling all solidity attack vectors that I come across with.
+This repository contains my ultimate solidity attack vectors compilation. <br>
+I will be compiling all solidity attack vectors that I come across with.<br><br>
+thanks to `transmisions11/Solcurity` for a kickstart :)
 
-#### To-Do List
+## To-Do List
 - [x] `Solcurity` by `transmissions11`
 - [x] Solidity Attack Vectors `Quillhash`
 - [ ] `Secureum Audit Findings 101` (currently working)
@@ -10,7 +11,7 @@ I will be compiling all solidity attack vectors that I come across with.
 - [ ] `Solidity Lab` by Guardian Audits
 
 
-### General Review Approach:
+## General Review Approach:
 - Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
 - Construct a mental model of what you expect the contracts to look like before checking out the code.
 - Glance over the contracts to get a sense of the project's architecture. Tools like Surya can come in handy.
