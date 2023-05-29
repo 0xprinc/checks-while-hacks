@@ -6,6 +6,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 ## To-Do List
 - [x] `Solcurity` by `transmissions11`
 - [x] Solidity Attack Vectors `Quillhash`
+- [x] Defi Attack Vectors `Quillhash`
 - [ ] `Secureum Audit Findings 101` (currently working)
 - [ ] `Secureum Audit Findings 201` 
 - [ ] `Solidity Lab` by Guardian Audits
