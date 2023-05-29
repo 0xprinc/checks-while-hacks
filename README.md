@@ -28,7 +28,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - Look at related projects and their audits to check for any similar issues or oversights.
 - Try to figure out as many as expected invariants in the contract after getting its context.
 - Try to avoid transaction order dependence in the code or find a way to deal with it.
-- 
+- Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS)
 
 ## General entity
 - `g1` - Will the contract run the same if this entity is removed?
@@ -141,7 +141,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `C51` - When operating on more than one address, ask yourself what happens if they're the same.
 - `C52` - Can someone without spending other then gas fees change the state of the contract.
 - `C53` - Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
-- `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not sconsistent with             the value they return(some return the bool while others revert which can cause problems)
+- `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems), you can always convert `bool` to `revert` by using `require`
 - `C55` - Similiar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
 - `C56` - Don't use extcodesize to gain the knowledge of whether the msg.sender is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
 - `C57` - Try to monitor the expected and actual length of the array.
@@ -214,7 +214,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `P5` - 
 
 ## DeFi
-
+`defi has many vulnerabilities outside solidity, so familiarize yourself with the crypto space and its trends`
 - `D1` - Check your assumptions about what other contracts do and return.
 - `D2` - Don't mix internal accounting with actual balances.
 - `D3` - Don't use spot price from an AMM as an oracle.
@@ -227,5 +227,6 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `D10` - Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
 - `D11` - If your contract is a target for token approvals, do not make arbitrary calls from user input.
 - `D12` - Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
-
-- `E1` - Always choose wisely between when to use `revert` or `error` or `bool`, you can convert bool to revert by using `require`
+- `D13` - One of the best optimisations can be decreasing the imparmenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
+- Check out for whether governance given to an EOA has infinite minting or approval power
+- 
