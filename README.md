@@ -215,6 +215,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 
 ## DeFi
 `defi has many vulnerabilities outside solidity, so familiarize yourself with the crypto space and its trends`
+includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing, Interlocking Directorate, 
 - `D1` - Check your assumptions about what other contracts do and return.
 - `D2` - Don't mix internal accounting with actual balances.
 - `D3` - Don't use spot price from an AMM as an oracle.
@@ -228,5 +229,6 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `D11` - If your contract is a target for token approvals, do not make arbitrary calls from user input.
 - `D12` - Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
 - `D13` - One of the best optimisations can be decreasing the imparmenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
-- Check out for whether governance given to an EOA has infinite minting or approval power
-- 
+- `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
+- `D15` - Look out for slippage tolerance in Defi Dex protocol
+- `D16` - 
