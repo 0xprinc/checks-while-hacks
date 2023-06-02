@@ -14,9 +14,21 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [ ] [`Solidity Lab` by Guardian Audits](https://lab.guardianaudits.com/encyclopedia-of-solidity-attack-vectors)
 
 ## Topics
-- [General Review Approach]()
+- Approach : Contains the general points during auditing
+- General Entity : Common questions arise while observing specific term in the smart contract
+- Variables : Points related to state variables
+- Structs : Points related to structs
+- Functions : Points related to functions
+- Modifiers : Points related to modifiers
+- Code : Some good practices to avoid any vulnerability
+- External Call : Points related to External Call
+- Static Call : Points related to Static Call
+- Events : Points related to Events
+- Contract : Some points related to the whole contract
+- Project : Best practices during building a project
+- Defi : Contains some DeFi related vulnerabilities
 
-## General Review Approach:
+## Approach
 - Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
 - Construct a mental model of what you expect the contracts to look like before checking out the code.
 - Glance over the contracts to get a sense of the project's architecture. Tools like Surya can come in handy.
