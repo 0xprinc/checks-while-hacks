@@ -4,14 +4,17 @@ I will be compiling all solidity attack vectors that I come across with.<br><br>
 thanks to `transmisions11/Solcurity` for a kickstart :)
 
 ## To-Do List
-- [x] `Solcurity` by `transmissions11`
-- [x] Solidity Attack Vectors `Quillhash`
-- [x] Defi Attack Vectors `Quillhash`
-- [ ] NFT Attack Vectors `Quillhash`
-- [ ] `Secureum Audit Findings 101` (currently working)
-- [ ] `Secureum Audit Findings 201` 
-- [ ] `Solidity Lab` by Guardian Audits
+- [x] [`Solcurity`](https://github.com/transmissions11/solcurity)
+- [x] [Solidity Attack Vectors `Quillhash`](https://github.com/Quillhash/Solidity-Attack-Vectors)
+- [x] [Defi Attack Vectors `Quillhash`](https://github.com/Quillhash/DeFi-Attack-Vectors)
+- [x] [NFT Attack Vectors `Quillhash`](https://github.com/Quillhash/NFT-Attack-Vectors)
+- [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
+- [ ] [`Secureum` Audit Findings 101](https://secureum.substack.com/p/audit-findings-101)
+- [ ] [`Secureum` Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
+- [ ] [`Solidity Lab` by Guardian Audits](https://lab.guardianaudits.com/encyclopedia-of-solidity-attack-vectors)
 
+## Topics
+- [General Review Approach]()
 
 ## General Review Approach:
 - Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
