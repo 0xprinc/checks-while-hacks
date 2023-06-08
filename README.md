@@ -219,7 +219,8 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `T13` - Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
 - `T14` - Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
-- `T15` - 
+- `T15` - The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
+- 
 
 ## Project
 
@@ -249,3 +250,6 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
 - `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running and also 
 - `D16` - 
+
+## After Transaction
+- `1.` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
