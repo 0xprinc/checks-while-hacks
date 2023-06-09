@@ -170,7 +170,9 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `C63` - look out for signature replay attacks.
 - `C64` - Use underscores or constants for number literals for better readability and also for unexpected humar error.
 - `C65` - Use bytes.concat() instead of abi.encodePacked(), since this is preffered since 0.8.4
-- `C66` - 
+- `C66` - Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
+          example can be use of Math.min(a, b) which change suddenly when the condition changes.
+- `C67` - 
 
 ## External Calls
 
@@ -229,6 +231,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `T18` - The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
 - `T19` - Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retreive them.
+- `T20` - in the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of teh funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
 
 ## Project
 
@@ -258,7 +261,6 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
 - `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running and also 
 - `D16` - There is slippage cap in the functions in AMMs but there should also be the cap on time as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amoount of token, but not at proper time can lead to bad trade.
-- 
 
 ## After Transaction
 - `1` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
