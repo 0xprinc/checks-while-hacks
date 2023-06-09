@@ -168,6 +168,9 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `C61` - don't use erecver and signature to verify the user as these cause signature malleability.
 - `C62` - delete every entry of the mapping before deleting the mapping itself, otherwose the getter function will still work by giving all the mapping values
 - `C63` - look out for signature replay attacks.
+- `C64` - Use underscores or constants for number literals for better readability and also for unexpected humar error.
+- `C65` - Use bytes.concat() instead of abi.encodePacked(), since this is preffered since 0.8.4
+- `C66` - 
 
 ## External Calls
 
@@ -222,7 +225,10 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
           (diamond problem)
 - `T15` - The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
 - `T16` - Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
-- 
+- `T17` - its a good practice to include the [headers](https://github.com/transmissions11/headers)
+- `T18` - The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
+          { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
+- `T19` - Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retreive them.
 
 ## Project
 
@@ -231,7 +237,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `P3` - Fuzz test as much as possible.
 - `P4` - Use symbolic execution where possible.
 - `P5` - Run Slither/Solhint and review all findings.
-- `P5` - 
+- `P5` - The coverage for the tests should be 100%
 
 ## DeFi
 `defi has many vulnerabilities outside solidity, so familiarize yourself with the crypto space and its trends`
@@ -251,11 +257,12 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D13` - One of the best optimisations can be decreasing the imparmenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
 - `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
 - `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running and also 
-- `D16` - 
+- `D16` - There is slippage cap in the functions in AMMs but there should also be the cap on time as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amoount of token, but not at proper time can lead to bad trade.
+- 
 
 ## After Transaction
-- `1.` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
+- `1` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
 
 ## NFT
-- `1.` - Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
+- `1` - Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
 - 
