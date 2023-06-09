@@ -200,7 +200,8 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `E4` - Is when the event emitted and all fields documented using natspec?
 - `E5` - Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
 - `E6` - Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
-- `E7` - 
+- `E7` - Events should be made for every important change in state made through the contract.
+
 
 ## Contract
 
@@ -220,6 +221,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `T14` - Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
 - `T15` - The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
+- `T16` - Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
 - 
 
 ## Project
@@ -253,3 +255,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 
 ## After Transaction
 - `1.` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
+
+## NFT
+- `1.` - Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
+- 
