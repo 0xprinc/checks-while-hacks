@@ -1,4 +1,4 @@
-## checks while hacks
+## Checks while Hacks
 This repository contains my ultimate solidity attack vectors compilation. <br>
 I will be compiling all solidity attack vectors that I come across with.<br><br>
 thanks to `transmisions11/Solcurity` for a kickstart :)
@@ -13,64 +13,58 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [ ] [`Secureum` Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
 - [ ] [`Solidity Lab` by Guardian Audits](https://lab.guardianaudits.com/encyclopedia-of-solidity-attack-vectors)
 
-## Topics
-- Approach : Contains the general points during auditing.
-- General Entity : Common questions arise while observing specific term in the smart contract.
-- Variables : Points related to state variables.
-- Structs : Points related to structs.
-- Functions : Points related to functions.
-- Modifiers : Points related to modifiers.
-- Code : Some good practices to avoid any vulnerability.
-- External Call : Points related to External Call.
-- Static Call : Points related to Static Call.
-- Events : Points related to Events.
-- Contract : Some points related to the whole contract
-- Project : Best practices during building a project.
-- Defi : Contains some DeFi related vulnerabilities.
-- After Transaction : Security issues that can arise after the transaction has been submitted to the mempool.
-- NFT : Issues specific to NFTs.
+## Sections 
+1. Approach : Contains the general points during auditing.
+2. General Entity : Common questions arise while observing specific term in the smart contract.
+3. Variables : Points related to state variables.
+4. Structs : Points related to structs.
+5. Functions : Points related to functions.
+6. Modifiers : Points related to modifiers.
+7. Code : Some good practices to avoid any vulnerability.
+8. External Call : Points related to External Call.
+9. Static Call : Points related to Static Call.
+10. Events : Points related to Events.
+11. Contract : Some points related to the whole contract
+12. Project : Best practices during building a project.
+13. Defi : Contains some DeFi related vulnerabilities.
+14. After Transaction : Security issues that can arise after the transaction has been submitted to the mempool.
+15. NFT : Issues specific to NFTs.
 
 ## Approach
 - Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
 - Construct a mental model of what you expect the contracts to look like before checking out the code.
-- Glance over the contracts to get a sense of the project's architecture. Tools like Surya can come in handy.
+- Glance over the contracts to get a sense of the project's architecture.
 - Compare the architecture to your mental model. Look into areas that are surprising.
-- Create a threat model and make a list of theoretical high level attack vectors.
-- Identify the various entities(variables to store some value, governance entity etc.) that are involved in the contract
-- List the permissions and barriers that are present with those entities and how they can cross their barriers and also misuse their permissions
-- Look at areas that can do value exchange. Especially functions like `transfer`, `transferFrom`, `send`, `call`, `delegatecall`, and `selfdestruct`. Walk backward from them to ensure they are secured properly.
-- Look at areas that interface with external contracts and ensure all assumptions about them are valid like share price only increases, etc.
+- Identify relevant global and state variables, functions, equations that are involved in the contract.
+- List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
+- Look at areas that interface with external contracts and ensure all assumptions about them are valid.
 - Do a generic line-by-line review of the contracts.
 - Do another review from the perspective of every actor in the threat model.
 - Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
-- Run tools like Slither/Solhint and review their output.
+- Run static analysers and review their output.
 - Look at related projects and their audits to check for any similar issues or oversights.
 - Try to figure out as many as expected invariants in the contract after getting its context.
-- Try to avoid transaction order dependence in the code or find a way to deal with it.
-- Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS)
+- Try to avoid `transaction order dependence` in the code or find a way to deal with it.
+- Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
 
-## General entity
-- `g1` - Will the contract run the same if this entity is removed?
-- `g2` - Will this entity be replaced with some alternative code?
-- `g3` - will this entity be used by the admin to do some exploit(making the protocol apparently centralised)?
-- `g4` - Is the naming consistent with the whole repo?
-- `g5` - Is the entity opening a path for arbitrary interaction with the contract?
-- `g6` - Will the entity make a revert making the transaction revert which can be bad for gas?
+## Common questions to ask when we come across any general entity
+1. Will the contract run the same if this entity is removed?
+2. Will this entity be replaced with some alternative code?
+3. Will this entity be used by the admin to do some exploit(making the protocol apparently centralised)?
+4. Is the entity opening a path for arbitrary interaction with the contract?
 
 ## Variables
 
-- `V1` - Can it be `internal`?
-- `V2` - Can it be `constant`?
-- `V3` - Can it be `immutable`?
-- `V4` - Is its visibility set? (SWC-108)
-- `V5` - Is the purpose of the variable and other important information documented using natspec?
-- `V6` - Can it be packed with an adjacent storage variable?
-- `V7` - Can it be packed in a struct with more than 1 other variable?
-- `V8` - Use full 256 bit types unless packing with other variables.
-- `V9` - If it's a public array, is a separate function provided to return the full array?
-- `V10` - Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
-- `V11` - Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory.
-- `V12` - 
+1. Is the visibility set? Can it be more specific such as `external`, `internal`, `private`? 
+2. Can it be `constant`,`immutable`?
+3. Is the purpose of the variable and other important information documented using `natspec`?
+4. Can it be packed with an adjacent storage variable?
+5. Can it be packed in a struct with more than 1 other variable?
+6. Use full 256 bit types unless packing with other variables.
+7. If it's a public array, is a separate function provided to return the full array?
+8. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
+9. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+10. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
 
 ## Structs
 
