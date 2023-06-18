@@ -168,7 +168,6 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `C65` - Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
 - `C66` - Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-- `C67` - 
 
 ## External Calls
 
@@ -184,7 +183,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - `X10` - Always assume that the external call will fail, now code accordingly.
 - `X11` - Try avoiding taking arbitrary input or calldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
 - `X12` - The external calls from a contract can be made to be failed and still be made the function continue to act if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Greifing)
-- `X13` - 
+
 
 ## Static Calls
 
@@ -263,4 +262,3 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 
 ## NFT
 - `1` - Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
-- 
