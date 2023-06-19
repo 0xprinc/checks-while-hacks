@@ -73,37 +73,41 @@ Previous Audits :
 
 ## Structs
 
-- `S1` - Is a struct necessary? Can the variable be packed raw in storage?
-- `S2` - Are its fields packed together (if possible)?
-- `S3` - Is the purpose of the struct and all fields documented using natspec?
+1. Is a struct necessary? Can the variable be packed raw in storage?
+2. Are its fields packed together (if possible)?
+3. Is the purpose of the struct and all fields documented using natspec?
 
 ## Functions
 
-- `F1` - Can it be `external`?
-- `F2` - Should it be `internal`?
-- `F3` - Should it be `payable`?
-- `F4` - Can it be combined with another similar function?
-- `F5` - Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
-- `F6` - Is the checks before effects pattern followed? (SWC-107)
-- `F7` - Check for front-running possibilities, such as the approve function. (SWC-114)
-- `F8` - Is insufficient gas greifing possible? (SWC-126)
-- `F9` - Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
-- `F10` - Are return values always assigned?
-- `F11` - Write down and test invariants about state before a function can run correctly.
-- `F12` - Write down and test invariants about the return or any changes to state after a function has run.
-- `F13` - Take care when naming functions, because people will assume behaviour based on the name.
-- `F14` - If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
-- `F15` - Are all arguments, return values, side effects and other information documented using natspec?
-- `F16` - If the function allows operating on another user in the system, do not assume `msg.sender` is the user being operated on.
-- `F17` - If the function requires the contract be in an uninitialized state, check an explicit `initialized` variable. Do not use `owner == address(0)` or other similar checks as substitutes.
-- `F18` - Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
-- `F19` - Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
+1. Should it be `external`or `internal`?
+2. Should it be `payable`?
+3. Can it be combined with another similar function?
+4. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
+5. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
+6. Are the multiple arrays taken have same length?
+7. Is the `checks` before `effects` pattern followed? (SWC-107)
+8. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
+9. Check for front-running possibilities, such as the approve function.(SWC-114)
+10. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
+11. Are the `modifiers`(if more than one) written in funtion in correct order, because the change in order will change the code?
+12. Write down and test invariants about state before a function can run correctly.
+13. Write down and test invariants about the return or any changes to state after a function has run.
+14. Take care when naming functions, because people will assume behaviour based on the name.
+15. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
+16. Are all arguments, return values, side effects and other information documented using `natspec`?
+17. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
+18. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
+19. Are return values always assigned?, sometimes not assigning values is better.
+20. Try not to use `msg.value`, as it is used after every operation so the left amount decreases but the `msg.value` will return the initial amount always this will cause loss of funds of contract.
+21. Try not to write `msg.value` in loop, it can cause loss of funds of the smart contract.
 
 ## Modifiers
 
-- `M1` - Are no storage updates made (except in a reentrancy lock)?
-- `M2` - Are external calls avoided?
-- `M3` - Is the purpose of the modifier and other important information documented using natspec?
+1. Are no storage updates made (except in a reentrancy lock)?
+2. Are `external calls` avoided?
+3. Is the purpose of the modifier and other important information documented using `natspec`?
+4. Always remember that `modifiers` increase the codesize so use them wisely.
+
 
 ## Code
 
@@ -120,7 +124,6 @@ Previous Audits :
 - `C12` - Output of `abi.encodePacked()` shouldn't be hashed if using >2 dynamic types. Prefer using `abi.encode()` in general. (SWC-133)
 - `C13` - Careful with assembly, don't use any arbitrary data. (SWC-127)
 - `C14` - Don't assume a specific ETH balance. (SWC-132)
-- `C15` - Avoid insufficient gas griefing. (SWC-126)
 - `C16` - Private data isn't private. (SWC-136)
 - `C17` - Updating a struct/array in memory won't modify it in storage.
 - `C18` - Never shadow state variables. (SWC-119)
@@ -161,7 +164,7 @@ Previous Audits :
 - `C53` - Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
 - `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems), you can always convert `bool` to `revert` by using `require`
 - `C55` - Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
-- `C56` - Don't use `extcodesize` to gain the knowledge of whether the msg.sender is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
+- `C56` - Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
 - `C57` - Try to monitor the expected and actual length of the array.
 - `C58` - Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
 - `C59` - Making a new owner is a crucial think, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
@@ -173,6 +176,7 @@ Previous Audits :
 - `C65` - Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
 - `C66` - Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
+- `C67` - Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc.
 
 ## External Calls
 
@@ -231,7 +235,7 @@ Previous Audits :
 - `T18` - The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
 - `T19` - Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
-- `T20` - in the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
+- `T20` - In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
 
 ## Project
 
@@ -259,7 +263,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D12` - Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
 - `D13` - One of the best optimisations can be decreasing the impermenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
 - `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
-- `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running and also 
+- `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
 - `D16` - There is slippage cap in the functions in AMMs but there should also be the cap on time as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
 
 ## After Transaction
