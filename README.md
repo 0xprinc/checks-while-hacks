@@ -13,6 +13,11 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [ ] [`Secureum` Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
 - [ ] [`Solidity Lab` by Guardian Audits](https://lab.guardianaudits.com/encyclopedia-of-solidity-attack-vectors)
 
+Previous Audits : 
+- [x] Caviar AMM December 2022
+- [ ] Caviar AMM April 2023
+- [ ] ENS November 2022 
+
 ## Sections 
 1. Approach : Contains the general points during auditing.
 2. General Entity : Common questions arise while observing specific term in the smart contract.
