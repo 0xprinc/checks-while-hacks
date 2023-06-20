@@ -15,8 +15,8 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 
 Previous Audits : 
 - [x] Caviar AMM December 2022
-- [ ] Caviar AMM April 2023
-- [ ] ENS November 2022 
+- [x] Caviar AMM April 2023
+- [x] ENS November 2022
 
 ## Sections 
 1. Approach : Contains the general points during auditing.
@@ -91,15 +91,14 @@ Previous Audits :
 10. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
 11. Are the `modifiers`(if more than one) written in funtion in correct order, because the change in order will change the code?
 12. Write down and test invariants about state before a function can run correctly.
-13. Write down and test invariants about the return or any changes to state after a function has run.
+13. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
 14. Take care when naming functions, because people will assume behaviour based on the name.
 15. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
 16. Are all arguments, return values, side effects and other information documented using `natspec`?
 17. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
 18. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
 19. Are return values always assigned?, sometimes not assigning values is better.
-20. Try not to use `msg.value`, as it is used after every operation so the left amount decreases but the `msg.value` will return the initial amount always this will cause loss of funds of contract.
-21. Try not to write `msg.value` in loop, it can cause loss of funds of the smart contract.
+20. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
 
 ## Modifiers
 
@@ -113,6 +112,7 @@ Previous Audits :
 
 - `C1` - Using SafeMath or 0.8 checked math? (SWC-101)
 - `C2` - Are any storage slots read multiple times?
+- `C2` - Implementation should be consistent with the documentation, whats written in docs should be implemented in the contract.
 - `C3` - Are any unbounded loops/arrays used that can cause DoS? (SWC-128)
 - `C4` - Use `block.timestamp` only for long intervals. (SWC-116)
 - `C5` - Don't use block.number for elapsed time. (SWC-116)
@@ -176,7 +176,9 @@ Previous Audits :
 - `C65` - Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
 - `C66` - Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-- `C67` - Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc.
+- `C67` - Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
+- `C68` - Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
+- `C69` - Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
 
 ## External Calls
 
@@ -265,6 +267,11 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
 - `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
 - `D16` - There is slippage cap in the functions in AMMs but there should also be the cap on time as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
+- `D17` - Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
+- `D18` - Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
+- `D19` - Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
+- `D20` - Fees is a part of many protocols, watch out for the msg.sender, fee payer, funds receiver as different users.
+- `D21` - In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation. 
 
 ## After Transaction
 - `1` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
