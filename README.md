@@ -51,6 +51,11 @@ Previous Audits :
 - Try to figure out as many as expected invariants in the contract after getting its context.
 - Try to avoid `transaction order dependence` in the code or find a way to deal with it.
 - Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
+- Comment the "why" as much as possible. 
+- Comment the "what" if using obscure syntax or writing unconventional code.
+- Comment explanations + example inputs/outputs next to complex and fixed point math.
+- Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
+- Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
 
 ## Common questions to ask when we come across any general entity
 1. Will the contract run the same if this entity is removed?
@@ -110,79 +115,74 @@ Previous Audits :
 
 ## Code
 
-- `C1` - Using SafeMath or 0.8 checked math? (SWC-101)
-- `C2` - Are any storage slots read multiple times?
-- `C2` - Implementation should be consistent with the documentation, whats written in docs should be implemented in the contract.
-- `C3` - Are any unbounded loops/arrays used that can cause DoS? (SWC-128)
-- `C4` - Use `block.timestamp` only for long intervals. (SWC-116)
-- `C5` - Don't use block.number for elapsed time. (SWC-116)
-- `C7` - Avoid delegatecall wherever possible, especially to external (even if trusted) contracts. (SWC-112)
-- `C8` - Do not update the length of an array while iterating over it.
-- `C9` - Don't use `blockhash()`, etc for randomness. (SWC-120)
-- `C10` - Are signatures protected against replay with a nonce and `block.chainid` (SWC-121)
-- `C11` - Ensure all signatures use EIP-712. (SWC-117 SWC-122)
-- `C12` - Output of `abi.encodePacked()` shouldn't be hashed if using >2 dynamic types. Prefer using `abi.encode()` in general. (SWC-133)
-- `C13` - Careful with assembly, don't use any arbitrary data. (SWC-127)
-- `C14` - Don't assume a specific ETH balance. (SWC-132)
-- `C16` - Private data isn't private. (SWC-136)
-- `C17` - Updating a struct/array in memory won't modify it in storage.
-- `C18` - Never shadow state variables. (SWC-119)
-- `C19` - Do not mutate function parameters.
-- `C20` - Is calculating a value on the fly cheaper than storing it?
-- `C21` - Are all state variables read from the correct contract (master vs. clone)?
-- `C22` - Are comparison operators used correctly (`>`, `<`, `>=`, `<=`), especially to prevent off-by-one errors?
-- `C23` - Are logical operators used correctly (`==`, `!=`, `&&`, `||`, `!`), especially to prevent off-by-one errors?
-- `C24` - Always multiply before dividing, unless the multiplication could overflow.
-- `C25` - Are magic numbers replaced by a constant with an intuitive name?
-- `C26` - If the recipient of ETH had a fallback function that reverted, could it cause DoS? (SWC-113)
-- `C27` - Use SafeERC20 or check return values safely.
-- `C28` - Don't use `msg.value` in a loop.
-- `C29` - Don't use `msg.value` if recursive delegatecalls are possible (like if the contract inherits `Multicall`/`Batchable`).
-- `C30` - Don't assume `msg.sender` is always a relevant user.
-- `C31` - Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
-- `C32` - Don't use `tx.origin` for authorization. (SWC-115)
-- `C33` - Don't use `address.transfer()` or `address.send()`. Use `.call.value(...)("")` instead. (SWC-134)
-- `C34` - When using low-level calls, ensure the contract exists before calling.
-- `C35` - When calling a function with many parameters, use the named argument syntax.
-- `C36` - Do not use assembly for create2. Prefer the modern salted contract creation syntax.
-- `C37` - Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
-- `C38` - Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
-- `C39` - Comment the "why" as much as possible. 
-- `C40` - Comment the "what" if using obscure syntax or writing unconventional code.
-- `C41` - Comment explanations + example inputs/outputs next to complex and fixed point math.
-- `C42` - Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
-- `C43` - Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
-- `C44` - Use `unchecked` blocks where overflow/underflow is impossible, or where an overflow/underflow is unrealistic on human timescales (counters, etc). Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
-- `C45` - Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
-- `C46` - Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
-- `C47` - Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
-- `C48` - Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
-- `C49` - When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
-- `C50` - Use ternary expressions to simplify branching logic wherever possible.
-- `C51` - When operating on more than one address, ask yourself what happens if they're the same.
-- `C52` - Can someone without spending other then gas fees change the state of the contract.
-- `C53` - Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
-- `C54` - Always check for the return datatype of the called contract function, such as in erc20 implementation, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems), you can always convert `bool` to `revert` by using `require`
-- `C55` - Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
-- `C56` - Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
-- `C57` - Try to monitor the expected and actual length of the array.
-- `C58` - Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
-- `C59` - Making a new owner is a crucial think, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
-- `C60` - In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
-- `C61` - don't use `erecover` and `signature` to verify the user as these cause signature malleability.
-- `C62` - delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
-- `C63` - look out for signature replay attacks.
-- `C64` - Use underscores or constants for number literals for better readability and also for unexpected human error.
-- `C65` - Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
-- `C66` - Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
+1. Using SafeMath or 0.8 checked math? (SWC-101)
+2. Are any storage slots read multiple times?
+3. Implementation should be consistent with the documentation, whats written in docs should be implemented in the contract.
+4. Are any unbounded loops/arrays used that can cause DoS? (SWC-128)
+5. Use `block.timestamp` only for long intervals. (SWC-116)
+6. Don't use block.number for elapsed time. (SWC-116)
+7. Do not update the length of an array while iterating over it.
+8. Don't use `blockhash()`, etc for randomness. (SWC-120)
+9. Are signatures protected against replay with a nonce and `block.chainid`? (SWC-121)
+10. Ensure all signatures use EIP-712. (SWC-117 SWC-122)
+11. Output of `abi.encodePacked()` shouldn't be hashed if using >2 dynamic types. Prefer using `abi.encode()` in general. (SWC-133)
+12. Don't use any arbitrary data while using the assembly. (SWC-127)
+13. Don't assume a specific ETH balance. (SWC-132)
+14. Private data isn't private, it can be accessed. (SWC-136)
+15. Updating a struct/array in memory won't modify it in storage.
+16. Never shadow state variables. (SWC-119)
+17. Try not to mutate function parameters.
+18. Is calculating a value on the fly cheaper than storing it?
+19. Are all state variables read from the correct contract (master vs. clone)?
+20. Are comparison operators used correctly (`>`, `<`, `>=`, `<=`), especially to prevent off-by-one errors?
+21. Are logical operators used correctly (`==`, `!=`, `&&`, `||`, `!`), especially to prevent off-by-one errors?
+22. Always multiply before dividing, unless the multiplication could overflow.
+23. Are magic numbers replaced by a constant with an intuitive name?
+24. If the recipient of ETH had a fallback function that reverted, could it cause DoS? (SWC-113)
+25. Use SafeERC20 or check return values safely.
+26. Don't use `msg.value` if recursive delegatecalls are possible (like if the contract inherits `Multicall`/`Batchable`).
+27. Don't assume `msg.sender` is always a relevant user.
+28. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
+29. Don't use `tx.origin` for authorization. (SWC-115)
+30. Don't use `address.transfer()` or `address.send()`. Use `.call.value(...)("")` instead. (SWC-134)
+31. When using low-level calls, ensure the contract exists before calling.
+32. When calling a function with many parameters, use the named argument syntax.
+33. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
+34. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
+35. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
+36. Use `unchecked` blocks where overflow/underflow is impossible, or where an overflow/underflow is unrealistic on human timescales (counters, etc). Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
+37. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
+38. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
+39. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
+40. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
+41. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
+42. Use ternary expressions to simplify branching logic wherever possible.
+43. When operating on more than one address, ask yourself what happens if they're the same.
+44. Can someone without spending other then gas fees change the state of the contract.
+45. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
+46. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
+47. You can always convert `bool` to `revert` by using `require`.
+48. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
+49. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
+50. Try to monitor the expected and actual length of the array.
+51. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
+52. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
+53. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
+54. don't use `erecover` and `signature` to verify the user as these cause signature malleability.
+55. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
+56. Look out for signature replay attacks.
+57. Use underscores or constants for number literals for better readability and also for unexpected human error.
+58. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
+59. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-- `C67` - Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
-- `C68` - Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
-- `C69` - Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
+60. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
+61. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
+62. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
 
 ## External Calls
 
 - `X1` - Is an external contract call actually needed?
+- `X2` - Avoid delegatecall wherever possible, especially to external (even if trusted) contracts. (SWC-112)
 - `X2` - If there is an error, could it cause DoS? Like `balanceOf()` reverting. (SWC-113)
 - `X3` - Would it be harmful if the call reentered into the current function?
 - `X4` - Would it be harmful if the call reentered into another function?
@@ -274,7 +274,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D21` - In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation. 
 
 ## After Transaction
-- `1` - The transaction data can be seen buy the miner, so don't use things like password in the transactions.
+1. The transaction data can be seen buy the miner, so don't use things like password in the transactions.
 
 ## NFT
-- `1` - Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
+1. Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
