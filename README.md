@@ -198,10 +198,11 @@ Previous Audits :
 
 ## Static Calls
 
-- `S1` - Is an external contract call actually needed?
-- `S2` - Is it actually marked as view in the interface?
-- `S3` - If there is an error, could it cause DoS? Like `balanceOf()` reverting. (SWC-113)
-- `S4` - If the call entered an infinite loop, could it cause DoS?
+1. Is an external contract call actually needed?
+2. Is it actually marked as view in the interface?
+3. If there is an error, could it cause DoS? Like `balanceOf()` reverting. (SWC-113)
+4. If the call entered an infinite loop, could it cause DoS?
+5. Is this call supporting Reentrancy? Is this call reading the updated values OR outdated values?
 
 ## Events
 
