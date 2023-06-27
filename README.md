@@ -13,10 +13,11 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [ ] [`Secureum` Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
 - [ ] [`Solidity Lab` by Guardian Audits](https://lab.guardianaudits.com/encyclopedia-of-solidity-attack-vectors)
 
-Previous Audits : 
+Audit Reports : 
 - [x] Caviar AMM December 2022
 - [x] Caviar AMM April 2023
 - [x] ENS November 2022
+- [x] [@pashovkrum Bloom Protocol Report May, 2023](https://github.com/pashov/audits/blob/master/solo/Bloom-security-review.md)
 
 ## Sections 
 1. Approach : Contains the general points during auditing.
@@ -179,6 +180,12 @@ Previous Audits :
 61. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
 62. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
 
+
+## Unexpected implementations and Outputs from already deployed contracts
+1. Most price feeds use `Chainlink` as their price feed which actually return the values at `8 decimal` numbers, so while scaling the output with a general formula using 1e12 or 1e18 will not be applicable.
+2. 
+
+
 ## External Calls
 
 - `X1` - Is an external contract call actually needed?
@@ -267,13 +274,13 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 - `D13` - One of the best optimisations can be decreasing the impermenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
 - `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
 - `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
-- `D16` - There is slippage cap in the functions in AMMs but there should also be the cap on time as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
+- `D16` - There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
+- `D16` - The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
 - `D17` - Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
 - `D18` - Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
 - `D19` - Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
 - `D20` - Fees is a part of many protocols, watch out for the msg.sender, fee payer, funds receiver as different users.
-- `D21` - In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation. 
-
+- `D21` - In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation.
 ## After Transaction
 1. The transaction data can be seen buy the miner, so don't use things like password in the transactions.
 
