@@ -57,6 +57,8 @@ Audit Reports :
 - Comment explanations + example inputs/outputs next to complex and fixed point math.
 - Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
 - Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
+- We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
+- Also any role should not have the ability to take away all the funds into the contract, or any role that make the protocol centralised.
 
 ## Common questions to ask when we come across any general entity
 1. Will the contract run the same if this entity is removed?
@@ -183,8 +185,9 @@ Audit Reports :
 
 ## Unexpected implementations and Outputs from already deployed contracts
 1. Most price feeds use `Chainlink` as their price feed which sometimes return the values at `8 decimal` numbers, so while scaling the output with a general formula using 1e12 or 1e18 will not be applicable.
-2. Some tokens like `PAXG`, `USDT` have fee-on-transfer in-built which makes them transfer less tokens than the argument passed 
-
+2. Some tokens like `PAXG`, `USDT` have fee-on-transfer in-built which makes them transfer less tokens than the argument passed. So to get the exact value of transfer tokens we have to fetch the balance of the receiving contract twice(one before transfer and one after) and also a non-reentrant to protect against ERC-777 tokens
+3. Tokens like `USDT`, `KNC` have a `preApproval allowance`(before safe-approval) which is either set to `0` or `type(uint256).max`, at any other value, the safe-approval will revert. So we have to use `forceApproval Allowance` to mitigate this problem and to generalize any token approval in our protocol.
+   
 
 ## External Calls
 
