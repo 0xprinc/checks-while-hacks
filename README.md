@@ -182,8 +182,8 @@ Audit Reports :
 
 
 ## Unexpected implementations and Outputs from already deployed contracts
-1. Most price feeds use `Chainlink` as their price feed which actually return the values at `8 decimal` numbers, so while scaling the output with a general formula using 1e12 or 1e18 will not be applicable.
-2. 
+1. Most price feeds use `Chainlink` as their price feed which sometimes return the values at `8 decimal` numbers, so while scaling the output with a general formula using 1e12 or 1e18 will not be applicable.
+2. Some tokens like `PAXG`, `USDT` have fee-on-transfer in-built which makes them transfer less tokens than the argument passed 
 
 
 ## External Calls
