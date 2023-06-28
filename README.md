@@ -1,4 +1,4 @@
-## Checks while Hacks
+# Checks while Hacks
 This repository contains my ultimate solidity attack vectors compilation. <br>
 I will be compiling all solidity attack vectors that I come across with.<br><br>
 thanks to `transmisions11/Solcurity` for a kickstart :)
@@ -19,22 +19,23 @@ Audit Reports :
 - [x] ENS November 2022
 - [x] [@pashovkrum Bloom Protocol Report May, 2023](https://github.com/pashov/audits/blob/master/solo/Bloom-security-review.md)
 
-## Sections 
-1. Approach : Contains the general points during auditing.
-2. General Entity : Common questions arise while observing specific term in the smart contract.
-3. Variables : Points related to state variables.
-4. Structs : Points related to structs.
-5. Functions : Points related to functions.
-6. Modifiers : Points related to modifiers.
-7. Code : Some good practices to avoid any vulnerability.
-8. External Call : Points related to External Call.
-9. Static Call : Points related to Static Call.
-10. Events : Points related to Events.
-11. Contract : Some points related to the whole contract
-12. Project : Best practices during building a project.
-13. Defi : Contains some DeFi related vulnerabilities.
-14. After Transaction : Security issues that can arise after the transaction has been submitted to the mempool.
-15. NFT : Issues specific to NFTs.
+# Sections 
+1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
+2. [General Entity](https://github.com/0xprinc/checks-while-hacks#common-questions-to-ask-when-we-come-across-any-general-entity) : Common questions arise while observing specific term in the smart contract.
+3. [Variables](https://github.com/0xprinc/checks-while-hacks#variables) : Points related to state variables.
+4. [Structs](https://github.com/0xprinc/checks-while-hacks#structs) : Points related to structs.
+5. [Functions](https://github.com/0xprinc/checks-while-hacks#functions) : Points related to functions.
+6. [Modifiers](https://github.com/0xprinc/checks-while-hacks#modifiers) : Points related to modifiers.
+7. [Code](https://github.com/0xprinc/checks-while-hacks#code) : Some good practices to avoid any vulnerability.
+8. [Unexpected outputs](https://github.com/0xprinc/checks-while-hacks#unexpected-implementations-and-outputs-from-already-deployed-contracts) : Some unexpected implementations and outputs related to token standards
+9. [External Call](https://github.com/0xprinc/checks-while-hacks#external-calls) : Points related to External Call.
+10. [Static Call](https://github.com/0xprinc/checks-while-hacks#static-calls) : Points related to Static Call.
+11. [Events](https://github.com/0xprinc/checks-while-hacks#events) : Points related to Events.
+12. [Contract](https://github.com/0xprinc/checks-while-hacks#contract) : Some points related to the whole contract
+13. [Project](https://github.com/0xprinc/checks-while-hacks#project) : Best practices during building a project.
+14. [Defi](https://github.com/0xprinc/checks-while-hacks#defi) : Contains some DeFi related vulnerabilities.
+15. [After Transaction](https://github.com/0xprinc/checks-while-hacks#after-transaction) : Security issues that can arise after the transaction has been submitted to the mempool.
+16. [NFT](https://github.com/0xprinc/checks-while-hacks#nft) : Issues specific to NFTs.
 
 ## Approach
 - Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
