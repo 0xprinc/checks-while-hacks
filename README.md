@@ -18,6 +18,7 @@ Audit Reports :
 - [x] Caviar AMM April 2023
 - [x] ENS November 2022
 - [x] [@pashovkrum Bloom Protocol Report May, 2023](https://github.com/pashov/audits/blob/master/solo/Bloom-security-review.md)
+- [x] [@pashovkrum IPNFT - intellectual properties NFTs & fundraises](https://github.com/pashov/audits/blob/master/solo/IPNFT-security-review.md#l-03-usage-of-address-payables-send-method-is-discouraged)
 
 # Sections 
 1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
@@ -182,12 +183,16 @@ Audit Reports :
 60. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
 61. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
 62. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
-
+63. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
+64. `Round down` should be done while transferinng tokens from protocol to user so that no user can get the same value while having lower deposit.
+65. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
+66. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
+ 
 
 ## Unexpected implementations and Outputs from already deployed contracts
 1. Most price feeds use `Chainlink` as their price feed which sometimes return the values at `8 decimal` numbers, so while scaling the output with a general formula using 1e12 or 1e18 will not be applicable.
 2. Some tokens like `PAXG`, `USDT` have fee-on-transfer in-built which makes them transfer less tokens than the argument passed. So to get the exact value of transfer tokens we have to fetch the balance of the receiving contract twice(one before transfer and one after) and also a non-reentrant to protect against ERC-777 tokens
-3. Tokens like `USDT`, `KNC` have a `preApproval allowance`(before safe-approval) which is either set to `0` or `type(uint256).max`, at any other value, the safe-approval will revert. So we have to use `forceApproval Allowance` to mitigate this problem and to generalize any token approval in our protocol.
+3. Tokens like `USDT`, `KNC` have a approval-race-protection mechanism which uses `preApproval allowance`(before safe-approval) which is either set to `0` or `type(uint256).max`, at any other value, the safe-approval will `revert` instead of giving a `bool`. So we have to use `forceApproval Allowance` to mitigate this problem and to generalize any token approval in our protocol.
 4. Decimals are not fixed to 18 for all ERC20 implementations, such as `GUSD-Gemini Dollar` has only 2 decimals.
 5. There are implementations of ERC721 that revert when calling the `setApprovalForAll` function more than one times, this is because the function has a check 
           `require(_tokenOperator[msg.sender][_operator] != _approved)`. Example is `Axie` ERC721 Token.
