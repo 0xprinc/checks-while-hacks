@@ -20,6 +20,7 @@ Audit Reports :
 - [x] [@pashovkrum Bloom Protocol Report May, 2023](https://github.com/pashov/audits/blob/master/solo/Bloom-security-review.md)
 - [x] [@pashovkrum IPNFT - intellectual properties NFTs & fundraises](https://github.com/pashov/audits/blob/master/solo/IPNFT-security-review.md#l-03-usage-of-address-payables-send-method-is-discouraged)
 
+
 # Sections 
 1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
 2. [General Entity](https://github.com/0xprinc/checks-while-hacks#common-questions-to-ask-when-we-come-across-any-general-entity) : Common questions arise while observing specific term in the smart contract.
@@ -200,19 +201,19 @@ Audit Reports :
 
 ## External Calls
 
-- `X1` - Is an external contract call actually needed?
-- `X2` - Avoid delegatecall wherever possible, especially to external (even if trusted) contracts. (SWC-112)
-- `X2` - If there is an error, could it cause DoS? Like `balanceOf()` reverting. (SWC-113)
-- `X3` - Would it be harmful if the call reentered into the current function?
-- `X4` - Would it be harmful if the call reentered into another function?
-- `X5` - Is the result checked and errors dealt with? (SWC-104)
-- `X6` - What if it uses all the gas provided?
-- `X7` - Could it cause an out-of-gas in the calling contract if it returns a massive amount of data?
-- `X8` - If you are calling a particular function, do not assume that `success` implies that the function exists (phantom functions).
-- `X9` - Its best to be stateless while doing an external delegate call.
-- `X10` - Always assume that the external call will fail, now code accordingly.
-- `X11` - Try avoiding taking arbitrary input or calldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
-- `X12` - The external calls from a contract can be made to be failed and still be made the function continue to act if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Greifing)
+1. Is an external contract call actually needed?
+2. Avoid delegatecall wherever possible, especially to external (even if trusted) contracts. (SWC-112)
+3. If there is an error, could it cause DoS? Like `balanceOf()` reverting. (SWC-113)
+4. Would it be harmful if the call reentered into the current function?
+5. Would it be harmful if the call reentered into another function?
+6. Is the result checked and errors dealt with? (SWC-104)
+7. What if it uses all the gas provided?
+8. Could it cause an out-of-gas in the calling contract if it returns a massive amount of data?
+9. If you are calling a particular function, do not assume that `success` implies that the function exists (phantom functions).
+10. Its best to be stateless while doing an external delegate call.
+11. Always assume that the external call will fail, now code accordingly.
+12. Try avoiding taking arbitrary input or calldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
+13. The external calls from a contract can be made to be failed and still be made the function continue if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Greifing)
 
 
 ## Static Calls
@@ -225,13 +226,13 @@ Audit Reports :
 
 ## Events
 
-- `E1` - Should any fields be indexed?
-- `E2` - Is the creator of the relevant action included as an indexed field?
-- `E3` - Do not index dynamic types like strings or bytes.
-- `E4` - Is when the event emitted and all fields documented using natspec?
-- `E5` - Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
-- `E6` - Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
-- `E7` - Events should be made for every important change in state made through the contract.
+1. Should any fields be indexed?
+2. Is the creator of the relevant action included as an indexed field?
+3. Do not index dynamic types like strings or bytes.
+4. Is when the event emitted and all fields documented using natspec?
+5. `E5` - Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
+6. Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
+7. Events should be made for every important change in state made through the contract, so they can be read off-chain.
 
 
 ## Contract
