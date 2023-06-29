@@ -193,9 +193,9 @@ Audit Reports :
 ## Unexpected implementations and Outputs from already deployed contracts
 1. Most price feeds use `Chainlink` as their price feed which sometimes return the values at `8 decimal` numbers, so while scaling the output with a general formula using 1e12 or 1e18 will not be applicable.
 2. Some tokens like `PAXG`, `USDT` have fee-on-transfer in-built which makes them transfer less tokens than the argument passed. So to get the exact value of transfer tokens we have to fetch the balance of the receiving contract twice(one before transfer and one after) and also a non-reentrant to protect against ERC-777 tokens
-3. Tokens like `USDT`, `KNC` have a approval-race-protection mechanism which uses `preApproval allowance`(before safe-approval) which is either set to `0` or `type(uint256).max`, at any other value, the safe-approval will `revert` instead of giving a `bool`. So we have to use `forceApproval Allowance` to mitigate this problem and to generalize any token approval in our protocol.
-4. Decimals are not fixed to 18 for all ERC20 implementations, such as `GUSD-Gemini Dollar` has only 2 decimals.
-5. There are implementations of ERC721 that revert when calling the `setApprovalForAll` function more than one times, this is because the function has a check 
+3. Tokens like `USDT`, `KNC` have a approval-race-protection mechanism which uses `allowance` which is either set to `0` or `type(uint256).max`, at any other value, the safe-approval will `revert` instead of giving a `bool`. So we have to use `forceApproval Allowance` to mitigate this problem and to generalize any token approval in our protocol. `USDT` also don't have an `increaseAllowance()` function.
+5. Decimals are not fixed to 18 for all ERC20 implementations, such as `GUSD-Gemini Dollar` has only 2 decimals.
+6. There are implementations of ERC721 that revert when calling the `setApprovalForAll` function more than one times, this is because the function has a check 
           `require(_tokenOperator[msg.sender][_operator] != _approved)`. Example is `Axie` ERC721 Token.
    
 
