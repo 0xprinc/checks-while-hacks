@@ -198,7 +198,7 @@ Audit Reports :
 5. Decimals are not fixed to 18 for all ERC20 implementations, such as `GUSD-Gemini Dollar` has only 2 decimals.
 6. There are implementations of ERC721 that revert when calling the `setApprovalForAll` function more than one times, this is because the function has a check 
           `require(_tokenOperator[msg.sender][_operator] != _approved)`. Example is `Axie` ERC721 Token.
-7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds)
+7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds). Also if any variable is used to make sure that the data is not outdated, then while using the two different price feeds, we have to make sure that these two price feeds are updated at comparable amounts of time other wise the differene between their update time will lead to unexpected changes.
    
 
 ## External Calls
@@ -298,6 +298,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 20. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
 21. Fees is a part of many protocols, watch out for the msg.sender, fee payer, funds receiver as different users.
 22. In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation.
+23. Inflation attack : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
 
     
 ## After Transaction
