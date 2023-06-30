@@ -262,40 +262,44 @@ Audit Reports :
 
 ## Project
 
-- `P1` - Use the right license (you must use GPL if you depend on GPL code, etc).
-- `P2` - Unit test everything.
-- `P3` - Fuzz test as much as possible.
-- `P4` - Use symbolic execution where possible.
-- `P5` - Run Slither/Solhint and review all findings.
-- `P5` - The coverage for the tests should be 100%
+1. Use the right license (you must use GPL if you depend on GPL code, etc).
+2. Unit test everything.
+3. Fuzz test as much as possible.
+4. Use symbolic execution where possible.
+5. Run Slither/Solhint and review all findings.
+6. The coverage for the tests should be 100%
 
 ## DeFi
-`defi has many vulnerabilities outside solidity, so familiarize yourself with the crypto space and its trends`
-includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing, Interlocking Directorate, 
-- `D1` - Check your assumptions about what other contracts do and return.
-- `D2` - Don't mix internal accounting with actual balances.
-- `D3` - Don't use spot price from an AMM as an oracle.
-- `D4` - Do not trade on AMMs without receiving a price target off-chain or via an oracle.
-- `D5` - Use sanity checks to prevent oracle/price manipulation.
-- `D6` - Watch out for rebasing tokens. If they are unsupported, ensure that property is documented.
-- `D7` - Watch out for ERC-777 tokens. Even a token you trust could preform reentrancy if it's an ERC-777.
-- `D8` - Watch out for fee-on-transfer tokens. If they are unsupported, ensure that property is documented.
-- `D9` - Watch out for tokens that use too many or too few decimals. Ensure the max and min supported values are documented.
-- `D10` - Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
-- `D11` - If your contract is a target for token approvals, do not make arbitrary calls from user input.
-- `D12` - Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
-- `D13` - One of the best optimisations can be decreasing the impermenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
-- `D14` - `Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
-- `D15` - Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
-- `D16` - There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
-- `D16` - The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
-- `D17` - Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
-- `D18` - Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
-- `D19` - Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
-- `D20` - Fees is a part of many protocols, watch out for the msg.sender, fee payer, funds receiver as different users.
-- `D21` - In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation.
+__`defi has many vulnerabilities outside solidity, so familiarize yourself with the crypto space and its trends`
+includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing, Interlocking Directorate__
+
+1. Check your assumptions about what other contracts do and return.
+2. Don't mix internal accounting with actual balances.
+3. Don't use spot price from an AMM as an oracle.
+4. Do not trade on AMMs without receiving a price target off-chain or via an oracle.
+5. Use sanity checks to prevent oracle/price manipulation.
+6. Watch out for rebasing tokens. If they are unsupported, ensure that property is documented.
+7. Watch out for ERC-777 tokens. Even a token you trust could preform reentrancy if it's an ERC-777. ERC721 are also vulnerable.
+8. Watch out for fee-on-transfer tokens. If they are unsupported, ensure that property is documented.
+9. Watch out for tokens that use too many or too few decimals. Ensure the max and min supported values are documented.
+10. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
+11. If your contract is a target for token approvals, do not make arbitrary calls from user input.
+12. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
+13. One of the best optimisations can be decreasing the impermenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
+14. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
+15. Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
+16. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
+17. The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
+18. Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
+19. Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
+20. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
+21. Fees is a part of many protocols, watch out for the msg.sender, fee payer, funds receiver as different users.
+22. In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation.
+
+    
 ## After Transaction
 1. The transaction data can be seen buy the miner, so don't use things like password in the transactions.
+
 
 ## NFT
 1. Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
