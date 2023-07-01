@@ -199,6 +199,7 @@ Audit Reports :
 6. There are implementations of ERC721 that revert when calling the `setApprovalForAll` function more than one times, this is because the function has a check 
           `require(_tokenOperator[msg.sender][_operator] != _approved)`. Example is `Axie` ERC721 Token.
 7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds). Also if any variable is used to make sure that the data is not outdated, then while using the two different price feeds, we have to make sure that these two price feeds are updated at comparable amounts of time other wise the differene between their update time will lead to unexpected changes.
+8. Different chains have different block mining time which poses a vulnerability when writing the same code for all the chains while relating the number of blocks and the timestamp.
    
 
 ## External Calls
@@ -262,6 +263,8 @@ Audit Reports :
 - `T19` - Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
 - `T20` - In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
 - `T21`- If the contract is another implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both, this can happen in the strategy protocols that makes strategy for another defi protocols.
+- `T22` - While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialixe function.
+- `T23` - Using same data feed of two related tokens is vulnerable, for wxample using datafeed for usdc for dai will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
 
 ## Project
 
@@ -298,7 +301,8 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 20. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
 21. Fees is a part of many protocols, watch out for the msg.sender, fee payer, funds receiver as different users.
 22. In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation.
-23. Inflation attack : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
+23. `Inflation attack` : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
+24. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
 
     
 ## After Transaction
