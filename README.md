@@ -200,6 +200,7 @@ Audit Reports :
           `require(_tokenOperator[msg.sender][_operator] != _approved)`. Example is `Axie` ERC721 Token.
 7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds). Also if any variable is used to make sure that the data is not outdated, then while using the two different price feeds, we have to make sure that these two price feeds are updated at comparable amounts of time other wise the differene between their update time will lead to unexpected changes.
 8. Different chains have different block mining time which poses a vulnerability when writing the same code for all the chains while relating the number of blocks and the timestamp.
+9. Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
    
 
 ## External Calls
@@ -240,31 +241,30 @@ Audit Reports :
 
 ## Contract
 
-- `T1` - Use an SPDX license identifier.
-- `T2` - Are events emitted for every storage mutating function?
-- `T3` - Check for correct inheritance, keep it simple and linear. (SWC-125)
-- `T4` - Use a `receive() external payable` function if the contract should accept transferred ETH.
-- `T5` - Write down and test invariants about relationships between stored state.
-- `T6` - Is the purpose of the contract and how it interacts with others documented using natspec?
-- `T7` - The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
-- `T8` - Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
-- `T9` - Avoid over-inheritance as it masks complexity and encourages over-abstraction.
-- `T10` - Always use the named import syntax to explicitly declare which contracts are being imported from another file.
-- `T11` - Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
-- `T12` - Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
-- `T13` - Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
-- `T14` - Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
+1. Use an SPDX license identifier.
+2. Are events emitted for every storage mutating function?
+3. Check for correct inheritance, keep it simple and linear. (SWC-125)
+4. Use a `receive() external payable` function if the contract should accept transferred ETH.
+5. Write down and test invariants about relationships between stored state.
+6. Is the purpose of the contract and how it interacts with others documented using natspec?
+7. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
+8. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
+9. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
+10. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
+11. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
+12. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
+13. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
+14. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
-- `T15` - The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
-- `T16` - Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
-- `T17` - its a good practice to include the [headers](https://github.com/transmissions11/headers)
-- `T18` - The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
+15. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
+16. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
+17. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
-- `T19` - Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
-- `T20` - In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
-- `T21`- If the contract is another implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both, this can happen in the strategy protocols that makes strategy for another defi protocols.
-- `T22` - While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialixe function.
-- `T23` - Using same data feed of two related tokens is vulnerable, for wxample using datafeed for usdc for dai will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
+18. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
+19. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
+20. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
+21. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialixe function.
+22. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
 
 ## Project
 
