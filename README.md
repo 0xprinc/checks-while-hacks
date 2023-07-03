@@ -94,13 +94,13 @@ Audit Reports :
 
 1. Should it be `external`or `internal`?
 2. Should it be `payable`?
-3. Can it be combined with another similar function?
-4. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
-5. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
-6. Are the multiple arrays taken have same length?
-7. Is the `checks` before `effects` pattern followed? (SWC-107)
-8. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
-9. Check for front-running possibilities, such as the approve function.(SWC-114)
+3. Can the function be front-runned?
+4. Can it be combined with another similar function?
+5. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
+6. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
+7. Are the multiple arrays taken have same length?
+8. Is the `checks` before `effects` pattern followed? (SWC-107)
+9. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
 10. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
 11. Are the `modifiers`(if more than one) written in funtion in correct order, because the change in order will change the code?
 12. Write down and test invariants about state before a function can run correctly.
