@@ -267,6 +267,7 @@ Audit Reports :
 20. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
 21. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialixe function.
 22. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
+23. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
 
 ## Project
 
