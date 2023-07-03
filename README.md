@@ -238,6 +238,7 @@ Audit Reports :
 5. `E5` - Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
 6. Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
 7. Events should be made for every important change in state made through the contract, so they can be read off-chain.
+8. Avoid event spamming where there are events emitted even when there is e.g. zero claim amount, zero token transfer, as this will affect off-chain event tracking.
 
 
 ## Contract
