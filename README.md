@@ -9,14 +9,11 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [x] [Defi Attack Vectors `Quillhash`](https://github.com/Quillhash/DeFi-Attack-Vectors)
 - [x] [NFT Attack Vectors `Quillhash`](https://github.com/Quillhash/NFT-Attack-Vectors)
 - [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
-- [ ] [`Secureum` Audit Findings 101](https://secureum.substack.com/p/audit-findings-101)
-- [ ] [`Secureum` Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
-- [ ] [`Solidity Lab` by Guardian Audits](https://lab.guardianaudits.com/encyclopedia-of-solidity-attack-vectors)
 
-Audit Reports : 
-- [x] Caviar AMM December 2022
-- [x] Caviar AMM April 2023
-- [x] ENS November 2022
+### Audit Reports : 
+- [x] [Caviar AMM December 2022](https://code4rena.com/reports/2022-12-caviar)
+- [x] [Caviar AMM April 2023](https://code4rena.com/reports/2023-04-caviar)
+- [x] [ENS November 2022](https://code4rena.com/reports/2022-11-ens)
 - [x] [@pashovkrum Bloom Protocol Report May, 2023](https://github.com/pashov/audits/blob/master/solo/Bloom-security-review.md)
 - [x] [@pashovkrum IPNFT - intellectual properties NFTs & fundraises](https://github.com/pashov/audits/blob/master/solo/IPNFT-security-review.md#l-03-usage-of-address-payables-send-method-is-discouraged)
 - [x] [Trust Security AlphaFinanceLab/stella-arbitrum-private- contract](https://github.com/stellaxyz/audits/blob/main/reports/20230529_Trust_Security.pdf) 
