@@ -46,7 +46,11 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
 - Look at areas that interface with external contracts and ensure all assumptions about them are valid.
 - Split the contract as the functions and variables interacting with the external contracts or not.
-- Try to get what are the possibilities during different states of the contract (when it is freshly deployed, when it has high amount of each token and every combination, when it is has some bool value come to true which is changing the state of the contract.)
+- Try to get what are the possibilities during different states of the contract
+    + when it is freshly deployed,
+    + when it has high amount of each token and every combination,
+    + when it is has some bool value come to true which is changing the state of the contract,
+    + try to switch between every if and else condition and also try in all ranges of the variables present
 - Do a generic line-by-line review of the contracts.
 - Do another review from the perspective of every actor in the threat model.
 - Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
