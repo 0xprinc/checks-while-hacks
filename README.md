@@ -76,7 +76,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 ## Variables
 
 1. Is the visibility set? Can it be more specific such as `external`, `internal`, `private`? 
-2. Can it be `constant`,`immutable`?
+2. Can it be `constant`, `immutable`?
 3. Is the purpose of the variable and other important information documented using `natspec`?
 4. Can it be packed with an adjacent storage variable?
 5. Can it be packed in a struct with more than 1 other variable?
@@ -94,7 +94,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 
 ## Functions
 
-1. Should it be `external`or `internal`?
+1. Should it be `external` or `internal`?
 2. Should it be `payable`?
 3. Can the function be front-runned?
 4. Can it be combined with another similar function?
@@ -104,7 +104,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 8. Is the `checks` before `effects` pattern followed? (SWC-107)
 9. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
 10. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
-11. Are the `modifiers`(if more than one) written in funtion in correct order, because the change in order will change the code?
+11. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
 12. Write down and test invariants about state before a function can run correctly.
 13. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
 14. Take care when naming functions, because people will assume behaviour based on the name.
@@ -120,7 +120,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 1. Are no storage updates made (except in a reentrancy lock)?
 2. Are `external calls` avoided?
 3. Is the purpose of the modifier and other important information documented using `natspec`?
-4. Always remember that `modifiers` increase the codesize so use them wisely.
+4. Always remember that `modifiers` increase the `Codesize` so use them wisely.
 
 
 ## Code
@@ -150,7 +150,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 23. Are magic numbers replaced by a constant with an intuitive name?
 24. If the recipient of ETH had a fallback function that reverted, could it cause DoS? (SWC-113)
 25. Use SafeERC20 or check return values safely.
-26. Don't use `msg.value` if recursive delegatecalls are possible (like if the contract inherits `Multicall`/`Batchable`).
+26. Don't use `msg.value` if recursive `Delegate Calls` are possible (like if the contract inherits `Multicall`/`Batchable`).
 27. Don't assume `msg.sender` is always a relevant user.
 28. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
 29. Don't use `tx.origin` for authorization. (SWC-115)
@@ -202,7 +202,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 5. Decimals are not fixed to 18 for all ERC20 implementations, such as `GUSD-Gemini Dollar` has only 2 decimals.
 6. There are implementations of ERC721 that revert when calling the `setApprovalForAll` function more than one times, this is because the function has a check 
           `require(_tokenOperator[msg.sender][_operator] != _approved)`. Example is `Axie` ERC721 Token.
-7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds). Also if any variable is used to make sure that the data is not outdated, then while using the two different price feeds, we have to make sure that these two price feeds are updated at comparable amounts of time other wise the differene between their update time will lead to unexpected changes.
+7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds). Also if any variable is used to make sure that the data is not outdated, then while using the two different price feeds, we have to make sure that these two price feeds are updated at comparable amounts of time other wise the difference between their update time will lead to unexpected changes.
 8. Different chains have different block mining time which poses a vulnerability when writing the same code for all the chains while relating the number of blocks and the timestamp.
 9. Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
 10. A problem with using only `approve` function but not the `increaseAllowance` is that, If A approves B 5 tokens and B don't use them, Now, If A approves B 10 tokens to increase the approve value from 5 to 10 tokens, so that B can spend 10 tokens, now B can front run that 10 token transaction to spend both 5 and 10 tokens.
@@ -211,7 +211,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 ## External Calls
 
 1. Is an external contract call actually needed?
-2. Avoid delegatecall wherever possible, especially to external (even if trusted) contracts. (SWC-112)
+2. Avoid `Delegatecall` wherever possible, especially to external (even if trusted) contracts. (SWC-112)
 3. If there is an error, could it cause DoS? Like `balanceOf()` reverting. (SWC-113)
 4. Would it be harmful if the call reentered into the current function?
 5. Would it be harmful if the call reentered into another function?
@@ -298,7 +298,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 10. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
 11. If your contract is a target for token approvals, do not make arbitrary calls from user input.
 12. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
-13. One of the best optimisations can be decreasing the impermenant loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
+13. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
 14. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
 15. Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
 16. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
@@ -310,12 +310,12 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 22. In case of protocols having subscriptions, unregistered, de-registered, expired entries are also different, these should be acting according to the documentation.
 23. `Inflation attack` : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
 24. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
-25. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freezed to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
-26. Watch out for all entry points for a position in a protocol for example in case of a protocol build on uniswap will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
+25. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freeze to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
+26. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
 
     
 ## After Transaction
-1. The transaction data can be seen buy the miner, so don't use things like password in the transactions.
+1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
 
 
 ## NFT
