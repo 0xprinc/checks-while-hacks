@@ -17,7 +17,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [x] [@pashovkrum Bloom Protocol Report May, 2023](https://github.com/pashov/audits/blob/master/solo/Bloom-security-review.md)
 - [x] [@pashovkrum IPNFT - intellectual properties NFTs & fundraises](https://github.com/pashov/audits/blob/master/solo/IPNFT-security-review.md#l-03-usage-of-address-payables-send-method-is-discouraged)
 - [x] [Trust Security AlphaFinanceLab/stella-arbitrum-private- contract](https://github.com/stellaxyz/audits/blob/main/reports/20230529_Trust_Security.pdf) 
-
+- [ ] [Olympus Protocol by @zachobront](https://github.com/zobront/audits/blob/main/reports/olympus-lending-amo.md)
 
 # Sections 
 1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
