@@ -196,6 +196,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 65. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
 66. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
 67. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
+68. A goos practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
