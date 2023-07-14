@@ -192,7 +192,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 61. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
 62. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
 63. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
-64. `Round down` should be done while transferinng tokens from protocol to user so that no user can get the same value while having lower deposit.
+64. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
 65. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
 66. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
 67. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
@@ -226,7 +226,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 10. Its best to be stateless while doing an external delegate call.
 11. Always assume that the external call will fail, now code accordingly.
 12. Try avoiding taking arbitrary input or calldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
-13. The external calls from a contract can be made to be failed and still be made the function continue if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Greifing)
+13. The external calls from a contract can be made to be failed and still be made the function continue if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Griefing)
 
 
 ## Static Calls
@@ -273,7 +273,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 18. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
 19. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
 20. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
-21. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialixe function.
+21. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
 22. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
 23. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
 
@@ -304,7 +304,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 12. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
 13. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
 14. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
-15. Look out for slippage tolerance in Defi Dex protocol, this saves from unexpected results and even protects from front running
+15. Look out for slippage tolerance in Defi DEX protocol, this saves from unexpected results and even protects from front running
 16. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
 17. The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
 18. Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
@@ -317,7 +317,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 25. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
 26. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freeze to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
 27. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
-28. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a simgle transaction will result in same timestamp for all of them.
+28. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a single transaction will result in same timestamp for all of them.
 29. FlashLoan protection is done by using the condition `lastTimestamp != block.timestamp`, this reduces multiple calls in a single transaction and even in a single block. But this also makes the protocol vulnerable to `DOS`, since if any valid transaction can be frontrunned, then that transaction can not be included in that block, and multiple attacks of this kind on consecutive blocks will cause `DOS`. So, an extra front-running protection should be there.
 
     
