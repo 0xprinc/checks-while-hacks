@@ -247,6 +247,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 6. Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
 7. Events should be made for every important change in state made through the contract, so they can be read off-chain.
 8. Avoid event spamming where there are events emitted even when there is e.g. zero claim amount, zero token transfer, as this will affect off-chain event tracking.
+9. Always remember that events also change the state and also can contain state changing functions as their arguments.
 
 
 ## Contract
