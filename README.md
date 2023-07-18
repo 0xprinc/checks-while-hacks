@@ -75,16 +75,17 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 
 ## Variables
 
-1. Is the visibility set? Can it be more specific such as `external`, `internal`, `private`? 
-2. Can it be `constant`, `immutable`?
-3. Is the purpose of the variable and other important information documented using `natspec`?
-4. Can it be packed with an adjacent storage variable?
-5. Can it be packed in a struct with more than 1 other variable?
-6. Use full 256 bit types unless packing with other variables.
-7. If it's a public array, is a separate function provided to return the full array?
-8. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
-9. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
-10. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
+1. When was the variable initialized and how?
+2. Is the visibility set? Can it be more specific such as `external`, `internal`, `private`? 
+3. Can it be `constant`, `immutable`?
+4. Is the purpose of the variable and other important information documented using `natspec`?
+5. Can it be packed with an adjacent storage variable?
+6. Can it be packed in a struct with more than 1 other variable?
+7. Use full 256 bit types unless packing with other variables.
+8. If it's a public array, is a separate function provided to return the full array?
+9. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
+10. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+11. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
 
 ## Structs
 
