@@ -256,28 +256,29 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 1. Use an SPDX license identifier.
 2. Are events emitted for every storage mutating function?
 3. Check for correct inheritance, keep it simple and linear. (SWC-125)
-4. Use a `receive() external payable` function if the contract should accept transferred ETH.
-5. Write down and test invariants about relationships between stored state.
-6. Is the purpose of the contract and how it interacts with others documented using natspec?
-7. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
-8. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
-9. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
-10. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
-11. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
-12. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
-13. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
-14. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
+4. Interface contracts generally don't contain the function which is internal as internal functions are made to support the public functions in their logic.
+5. Use a `receive() external payable` function if the contract should accept transferred ETH.
+6. Write down and test invariants about relationships between stored state.
+7. Is the purpose of the contract and how it interacts with others documented using natspec?
+8. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
+9. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
+10. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
+11. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
+12. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
+13. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
+14. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
+15. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
-15. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
-16. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
-17. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
+16. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
+17. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
+18. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
-18. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
-19. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
-20. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
-21. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
-22. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
-23. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
+19. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
+20. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
+21. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
+22. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
+23. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
+24. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
 
 ## Project
 
