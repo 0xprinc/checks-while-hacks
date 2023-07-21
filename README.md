@@ -197,7 +197,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 65. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
 66. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
 67. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
-68. A goos practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
+68. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -244,7 +244,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 2. Is the creator of the relevant action included as an indexed field?
 3. Do not index dynamic types like strings or bytes.
 4. Is when the event emitted and all fields documented using natspec?
-5. `E5` - Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
+5. Are all users/ids that are operated on in functions that emit the event stored as indexed fields?
 6. Avoid function calls and evaluation of expressions within event arguments. Their order of evaluation is unpredictable.
 7. Events should be made for every important change in state made through the contract, so they can be read off-chain.
 8. Avoid event spamming where there are events emitted even when there is e.g. zero claim amount, zero token transfer, as this will affect off-chain event tracking.
