@@ -18,6 +18,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [x] [@pashovkrum IPNFT - intellectual properties NFTs & fundraises](https://github.com/pashov/audits/blob/master/solo/IPNFT-security-review.md#l-03-usage-of-address-payables-send-method-is-discouraged)
 - [x] [Trust Security AlphaFinanceLab/stella-arbitrum-private- contract](https://github.com/stellaxyz/audits/blob/main/reports/20230529_Trust_Security.pdf) 
 - [x] [Olympus Protocol by @zachobront](https://github.com/zobront/audits/blob/main/reports/olympus-lending-amo.md)
+- [x] [@pashovkrum NFT Loots - ERC721 lootboxes](https://github.com/pashov/audits/blob/master/solo/NFTLoots-security-review.md)
 
 # Sections 
 1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
@@ -211,6 +212,12 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 8. Different chains have different block mining time which poses a vulnerability when writing the same code for all the chains while relating the number of blocks and the timestamp.
 9. Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
 10. A problem with using only `approve` function but not the `increaseAllowance` is that, If A approves B 5 tokens and B don't use them, Now, If A approves B 10 tokens to increase the approve value from 5 to 10 tokens, so that B can spend 10 tokens, now B can front run that 10 token transaction to spend both 5 and 10 tokens.
+11. While receiving arbitrary NFT, extend `ERC721Holder` from OpenZeppelin to handle the case when the NFT contract is using `safeTransferFrom` method as this method checks for `onERC721Received` method present in receiver contract.
+12. While using `transfer` or `transferFrom` to send the arbitrary tokens:
+    - Some tokens don't revert on failure, like `ZRX`
+    - Some don't return bool value on function call, like `USDT`, `BNB`, `OMG`
+    - Even the implementation of `USDT` is different on Polygon and Ethereum.
+13. Chain reorgs is another event for rearrangement of transactions and can even removal of transactions. This event is very common in the chains where the time between consecutive blocks is very less and can reach upto high depths of blocks. Mitigation involves waiting for enough blocks after the transaction has become successful, otherwise reorg can remove that transaction.
    
 
 ## External Calls
@@ -322,7 +329,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 27. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
 28. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a single transaction will result in same timestamp for all of them.
 29. FlashLoan protection is done by using the condition `lastTimestamp != block.timestamp`, this reduces multiple calls in a single transaction and even in a single block. But this also makes the protocol vulnerable to `DOS`, since if any valid transaction can be frontrunned, then that transaction can not be included in that block, and multiple attacks of this kind on consecutive blocks will cause `DOS`. So, an extra front-running protection should be there.
-
+30. Some protocols give a choice of the withdrawal token but the same value, this actually reduced capital efficiency if there is no proper ratio of all the tokens is maintained, as the ratio will be not equal but the value provided is equal.
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
