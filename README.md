@@ -20,7 +20,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [x] [Trust Security AlphaFinanceLab/stella-arbitrum-private- contract](https://github.com/stellaxyz/audits/blob/main/reports/20230529_Trust_Security.pdf) 
 - [x] [Olympus Protocol by @zachobront](https://github.com/zobront/audits/blob/main/reports/olympus-lending-amo.md)
 - [x] [@pashovkrum NFT Loots - ERC721 lootboxes](https://github.com/pashov/audits/blob/master/solo/NFTLoots-security-review.md)
-- [ ] [@code4rena OpenLeverage](https://code4rena.com/reports/2022-01-openleverage)
+- [x] [@code4rena OpenLeverage](https://code4rena.com/reports/2022-01-openleverage)
 - [ ] [@code4rena Sturdy](https://code4rena.com/reports/2022-05-sturdy)
 - [ ] [@code4rena AbraNFT](https://code4rena.com/reports/2022-04-abranft)
 - [ ] [@code4rena Backed Protocol](https://code4rena.com/reports/2022-04-backed)
@@ -217,6 +217,15 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 66. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
 67. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
 68. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
+69. Some good practices to save some gas involve :
+    - using ++i instead of i++
+    - using calldata to load the info instead of memory
+    - not equating with boolean inside the if-else statement
+    - use !=0 instead of > while putting non-zero condition to a uint
+    - use bytes32 instead of string to declare a string variable
+    - use bit manipulation instead of doing operation with the powers of 2
+    - use multiple require statements instead of a single require statement containing the conditions seprated with the && operator
+    - not use safeMath everywhere as some simple operations like division and multiplication can be done easily withour it
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
