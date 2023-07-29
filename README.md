@@ -9,7 +9,8 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 - [x] [Defi Attack Vectors `Quillhash`](https://github.com/Quillhash/DeFi-Attack-Vectors)
 - [x] [NFT Attack Vectors `Quillhash`](https://github.com/Quillhash/NFT-Attack-Vectors)
 - [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
-
+- [ ] [Smart contract Security Artile by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
+- [ ] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
 ### Audit Reports : 
 - [x] [@code4rena Caviar AMM December 2022](https://code4rena.com/reports/2022-12-caviar)
 - [x] [@code4rena Caviar AMM April 2023](https://code4rena.com/reports/2023-04-caviar)
@@ -235,6 +236,8 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
     - Some don't return bool value on function call, like `USDT`, `BNB`, `OMG`
     - Even the implementation of `USDT` is different on Polygon and Ethereum.
 13. Chain reorgs is another event for rearrangement of transactions and can even removal of transactions. This event is very common in the chains where the time between consecutive blocks is very less and can reach upto high depths of blocks. Mitigation involves waiting for enough blocks after the transaction has become successful, otherwise reorg can remove that transaction.
+14. The view functions of `CURVE` price oracle are not locked by the reentrancy modifier, so always check for the reentrancy modifier while using the curve oracle view function.
+15. The cost of withdrawing the ether from Arbitrum to Ethereum is very high since Arbitrum uses a rollup architecture, which requires users to pay gas fees to transfer assets between the rollup and the Ethereum mainnet.
    
 
 ## External Calls
