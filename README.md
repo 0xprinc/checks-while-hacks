@@ -98,7 +98,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 2. Is the visibility set? Can it be more specific such as `external`, `internal`, `private`? 
 3. Can it be `constant`, `immutable`?
 4. Is the purpose of the variable and other important information documented using `natspec`?
-5. Can it be packed with an adjacent storage variable?
+5. Can it be packed with an adjacent storage variable? this is applicable to both local, state and calldata variables.
 6. Can it be packed in a struct with more than 1 other variable?
 7. Use full 256 bit types unless packing with other variables.
 8. If it's a public array, is a separate function provided to return the full array?
@@ -177,47 +177,48 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 27. Don't assume `msg.sender` is always a relevant user.
 28. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
 29. Don't use `tx.origin` for authorization. (SWC-115)
-30. Don't use `address.transfer()` or `address.send()`. Use `.call.value(...)("")` instead. (SWC-134)
-31. When using low-level calls, ensure the contract exists before calling.
-32. When calling a function with many parameters, use the named argument syntax.
-33. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
-34. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
-35. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
-36. Use `unchecked` blocks where overflow/underflow is impossible, or where an overflow/underflow is unrealistic on human timescales (counters, etc). Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
-37. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
-38. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
-39. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
-40. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
-41. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
-42. Use ternary expressions to simplify branching logic wherever possible.
-43. When operating on more than one address, ask yourself what happens if they're the same.
-44. Can someone without spending other then gas fees change the state of the contract.
-45. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
-46. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
-47. You can always convert `bool` to `revert` by using `require`.
-48. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
-49. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
-50. Try to monitor the expected and actual length of the array.
-51. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
-52. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
-53. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
-54. don't use `erecover` and `signature` to verify the user as these cause signature malleability.
-55. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
-56. Look out for signature replay attacks.
-57. Use underscores or constants for number literals for better readability and also for unexpected human error.
-58. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
-59. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
+30. Don't use `address.transfer()` or `address.send()`. Use `.call.value(...)("")` instead. As these were used to save from reentrancy attacks since using them gives a constant supply of 2300 gas. But they have a problem that if in future, during some hardfork the gas is decreased then this will lead to the failure of the transaction as if the fallback function is a little bit of gas consuming then this will cause the transaction to fail.
+31. It is also recommended to not use the transfer or send for transfering the native ETH while interacting with a smart contract.
+32. When using low-level calls, ensure the contract exists before calling.
+33. When calling a function with many parameters, use the named argument syntax.
+34. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
+35. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
+36. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
+37. Use `unchecked` blocks where overflow/underflow is impossible, or where an overflow/underflow is unrealistic on human timescales (counters, etc). Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
+38. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
+39. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
+40. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
+41. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
+42. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
+43. Use ternary expressions to simplify branching logic wherever possible.
+44. When operating on more than one address, ask yourself what happens if they're the same.
+45. Can someone without spending other then gas fees change the state of the contract.
+46. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
+47. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
+48. You can always convert `bool` to `revert` by using `require`.
+49. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
+50. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
+51. Try to monitor the expected and actual length of the array.
+52. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
+53. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
+54. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
+55. don't use `erecover` and `signature` to verify the user as these cause signature malleability.
+56. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
+57. Look out for signature replay attacks.
+58. Use underscores or constants for number literals for better readability and also for unexpected human error.
+59. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
+60. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-60. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
-61. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
-62. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
-63. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
-64. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
-65. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
-66. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
-67. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
-68. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
-69. Some good practices to save some gas involve :
+61. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
+62. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
+63. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
+64. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
+65. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
+66. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
+67. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
+68. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
+69. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
+70. Some good practices to save some gas involve :
     - using ++i instead of i++
     - using calldata to load the info instead of memory
     - not equating with boolean inside the if-else statement
@@ -226,6 +227,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
     - use bit manipulation instead of doing operation with the powers of 2
     - use multiple require statements instead of a single require statement containing the conditions seprated with the && operator
     - not use safeMath everywhere as some simple operations like division and multiplication can be done easily withour it
+71. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -315,6 +317,7 @@ thanks to `transmisions11/Solcurity` for a kickstart :)
 22. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
 23. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
 24. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
+25. Try not to use the hardcoded address.
 
 ## Project
 
@@ -338,27 +341,31 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 7. Watch out for ERC-777 tokens. Even a token you trust could preform reentrancy if it's an ERC-777. ERC721 are also vulnerable.
 8. Watch out for fee-on-transfer tokens. If they are unsupported, ensure that property is documented.
 9. Watch out for tokens that use too many or too few decimals. Ensure the max and min supported values are documented.
-10. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
-11. If your contract is a target for token approvals, do not make arbitrary calls from user input.
-12. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
-13. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
-14. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
-15. Look out for slippage tolerance in Defi DEX protocol, this saves from unexpected results and even protects from front running
-16. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
-17. The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
-18. Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
-19. Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
-20. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
-21. Fees is a part of many protocols, watch out for the `msg.sender`, `fee payer`, `funds` receiver as different users.
-22. In general, `Treasury`, `admin`, `manager` are the different entities that can receive the incentives or fees collected, try to differentiate between them.
-23. In case of protocols having subscriptions, `unregistered`, `de-registered`, `expired` entries are also different, these should be acting according to the documentation.
-24. `Inflation attack` : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
-25. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
-26. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freeze to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
-27. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
-28. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a single transaction will result in same timestamp for all of them.
-29. FlashLoan protection is done by using the condition `lastTimestamp != block.timestamp`, this reduces multiple calls in a single transaction and even in a single block. But this also makes the protocol vulnerable to `DOS`, since if any valid transaction can be frontrunned, then that transaction can not be included in that block, and multiple attacks of this kind on consecutive blocks will cause `DOS`. So, an extra front-running protection should be there.
-30. Some protocols give a choice of the withdrawal token but the same value, this actually reduced capital efficiency if there is no proper ratio of all the tokens is maintained, as the ratio will be not equal but the value provided is equal.
+10. Always try to see what a dust amount can do, as the dust amount can make anything to non-zero and somethings that work only for absolute zero variable will fail.
+11. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
+12. If your contract is a target for token approvals, do not make arbitrary calls from user input.
+13. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
+14. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
+15. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
+16. Look out for slippage tolerance in Defi DEX protocol, this saves from unexpected results and even protects from front running
+17. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
+18. The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
+19. Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
+20. Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
+21. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
+22. Fees is a part of many protocols, watch out for the `msg.sender`, `fee payer`, `funds` receiver as different users.
+23. In general, `Treasury`, `admin`, `manager` are the different entities that can receive the incentives or fees collected, try to differentiate between them.
+24. In case of protocols having subscriptions, `unregistered`, `de-registered`, `expired` entries are also different, these should be acting according to the documentation.
+25. `Inflation attack` : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
+26. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
+27. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freeze to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
+28. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
+29. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a single transaction will result in same timestamp for all of them.
+30. FlashLoan protection is done by using the condition `lastTimestamp != block.timestamp`, this reduces multiple calls in a single transaction and even in a single block. But this also makes the protocol vulnerable to `DOS`, since if any valid transaction can be frontrunned, then that transaction can not be included in that block, and multiple attacks of this kind on consecutive blocks will cause `DOS`. So, an extra front-running protection should be there.
+31. Some protocols give a choice of the withdrawal token but the same value, this actually reduced capital efficiency if there is no proper ratio of all the tokens is maintained, as the ratio will be not equal but the value provided is equal.
+32. It is a good practice for having a partial tokens withdrawal as if the contract have not enough funds, then by the margin of a very small amount, the funds of a user can get stuck.
+33. Good practice is to give the claim authority to the owner or to the recepient themselves.
+34. Some safety factor checks that are included in the protocol during withdrawal, oracle updating, liquidating a position are made to be protected against the flashloan attacks. But they should not be hardcoded as the adverse conditions in the De-Fi can cross the limits and the withdraw function will not work due to the conditions and hence the funds are stuck and the conditions are depleting :(
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
