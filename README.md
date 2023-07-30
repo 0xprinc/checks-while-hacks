@@ -1,7 +1,7 @@
 # Checks while Hacks
 This repository contains my ultimate solidity attack vectors compilation. <br>
 I will be compiling all solidity attack vectors that I come across with.<br><br>
-thanks to `transmisions11/Solcurity` for a kickstart :)
+_inspired from `transmisions11/Solcurity`_
 
 ## To-Do List
 - [x] [`Solcurity`](https://github.com/transmissions11/solcurity)
