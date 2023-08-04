@@ -21,6 +21,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [Olympus Protocol by @zachobront](https://github.com/zobront/audits/blob/main/reports/olympus-lending-amo.md)
 - [x] [@pashovkrum NFT Loots - ERC721 lootboxes](https://github.com/pashov/audits/blob/master/solo/NFTLoots-security-review.md)
 - [x] [@code4rena OpenLeverage](https://code4rena.com/reports/2022-01-openleverage)
+- [x] [@code4rena Llama Governance](https://code4rena.com/reports/2023-06-llama)
 - [ ] [@code4rena Sturdy](https://code4rena.com/reports/2022-05-sturdy)
 - [ ] [@code4rena AbraNFT](https://code4rena.com/reports/2022-04-abranft)
 - [ ] [@code4rena Backed Protocol](https://code4rena.com/reports/2022-04-backed)
