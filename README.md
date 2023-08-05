@@ -106,6 +106,9 @@ _inspired from `transmisions11/Solcurity`_
 9. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
 10. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
 11. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
+12. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
+13. 
+
 
 ## Structs
 
@@ -250,6 +253,8 @@ _inspired from `transmisions11/Solcurity`_
 13. Chain reorgs is another event for rearrangement of transactions and can even removal of transactions. This event is very common in the chains where the time between consecutive blocks is very less and can reach upto high depths of blocks. Mitigation involves waiting for enough blocks after the transaction has become successful, otherwise reorg can remove that transaction.
 14. The view functions of `CURVE` price oracle are not locked by the reentrancy modifier, so always check for the reentrancy modifier while using the curve oracle view function.
 15. The cost of withdrawing the ether from Arbitrum to Ethereum is very high since Arbitrum uses a rollup architecture, which requires users to pay gas fees to transfer assets between the rollup and the Ethereum mainnet.
+16. There are the copies of NFTs in different chains after a hardfork is done. This lead to sometimes double value a single entity when the protocol functions cross-chain.
+17. 
    
 
 ## External Calls
@@ -267,6 +272,8 @@ _inspired from `transmisions11/Solcurity`_
 11. Always assume that the external call will fail, now code accordingly.
 12. Try avoiding taking arbitrary input or calldata input for a function that does external call which can make the EOA make the calls in the behalf of the contract.
 13. The external calls from a contract can be made to be failed and still be made the function continue if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Griefing)
+14. Always check for the contrat existence before doing a low-level call.
+15. Limit the number of iterations in the for-loop if making an external call due to gas shortage.
 
 
 ## Static Calls
@@ -374,4 +381,4 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 
 
 ## NFT
-1. Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past
+1. Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past.
