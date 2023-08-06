@@ -139,7 +139,7 @@ _inspired from `transmisions11/Solcurity`_
 19. Are return values always assigned?, sometimes not assigning values is better.
 20. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
 21. `block.timestamp` remains same during a single transaction even if any complex operation is done.
-22. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`.
+22. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
 23. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
 
 ## Modifiers
