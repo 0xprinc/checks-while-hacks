@@ -274,6 +274,7 @@ _inspired from `transmisions11/Solcurity`_
 13. The external calls from a contract can be made to be failed and still be made the function continue if the external call returns a bool, the attacker can just give very enough gas to make the sub-call(call from a contract function to another contract) fail.(Insufficient Gas Griefing)
 14. Always check for the contrat existence before doing a low-level call.
 15. Limit the number of iterations in the for-loop if making an external call due to gas shortage.
+16. Multiple subsequent(one external call is related to the other external call depending on previous one) external calls should be checked to conserve the `msg.value`.
 
 
 ## Static Calls
@@ -374,6 +375,8 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 32. It is a good practice for having a partial tokens withdrawal as if the contract have not enough funds, then by the margin of a very small amount, the funds of a user can get stuck.
 33. Good practice is to give the claim authority to the owner or to the recepient themselves.
 34. Some safety factor checks that are included in the protocol during withdrawal, oracle updating, liquidating a position are made to be protected against the flashloan attacks. But they should not be hardcoded as the adverse conditions in the De-Fi can cross the limits and the withdraw function will not work due to the conditions and hence the funds are stuck and the conditions are depleting :(
+35. Always check and confirm as the expected behaviour whether the voting power is weighted according to the token holding or uniformly distributed. IMO it should be weighted.
+36. Governance protocols should be checked between the clash in the priviledges of two different roles so as to have a race condition. And also what are the perks to open functions(public use)
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
