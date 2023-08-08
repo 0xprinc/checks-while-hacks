@@ -10,7 +10,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [NFT Attack Vectors `Quillhash`](https://github.com/Quillhash/NFT-Attack-Vectors)
 - [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
 - [ ] [Smart contract Security Artile by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
-- [ ] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
+- [x] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
 ### Audit Reports : 
 - [x] [@code4rena Caviar AMM December 2022](https://code4rena.com/reports/2022-12-caviar)
 - [x] [@code4rena Caviar AMM April 2023](https://code4rena.com/reports/2023-04-caviar)
