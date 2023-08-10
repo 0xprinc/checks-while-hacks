@@ -38,6 +38,7 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [@code4rena 88mph](https://code4rena.com/reports/2021-05-88mph/)
 - [ ] [@code4rena Based Loans](https://code4rena.com/reports/2021-04-basedloans/)
 - [ ] [@code4rena Maple Finance](https://code4rena.com/reports/2021-04-maple/)
+- [ ] [@code4rena Arbitrum Security Council Elections](https://code4rena.com/contests/2023-08-arbitrum-security-council-election-system/)
 
 # Sections 
 1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
