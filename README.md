@@ -29,7 +29,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@code4rena timeswap March 2022](https://code4rena.com/reports/2022-03-timeswap)
 - [x] [@code4rena Yield-Convex	](https://code4rena.com/reports/2022-01-yield/)
 - [x] [@code4rena Timeswap January 2022](https://code4rena.com/reports/2022-01-timeswap/)
-- [ ] [@code4rena Swivel](https://code4rena.com/reports/2021-09-swivel)
+- [x] [@code4rena Swivel](https://code4rena.com/reports/2021-09-swivel)
 - [ ] [@code4rena Wild Credit](https://code4rena.com/reports/2021-09-wildcredit/)
 - [ ] [@code4rena Yield micro contest #1](https://code4rena.com/reports/2021-08-yield)
 - [ ] [@code4rena Wild Credit](https://code4rena.com/reports/2021-07-wildcredit)
