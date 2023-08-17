@@ -257,7 +257,6 @@ _inspired from `transmisions11/Solcurity`_
 14. The view functions of `CURVE` price oracle are not locked by the reentrancy modifier, so always check for the reentrancy modifier while using the curve oracle view function.
 15. The cost of withdrawing the ether from Arbitrum to Ethereum is very high since Arbitrum uses a rollup architecture, which requires users to pay gas fees to transfer assets between the rollup and the Ethereum mainnet.
 16. There are the copies of NFTs in different chains after a hardfork is done. This lead to sometimes double value a single entity when the protocol functions cross-chain.
-17. 
    
 
 ## External Calls
