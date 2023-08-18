@@ -121,7 +121,7 @@ _inspired from `transmisions11/Solcurity`_
 
 ## Functions
 
-1. Should it be `external` or `internal`?
+1. Should it be `external` or `internal`? For instance, the function not called by the same contract should be marked as external.
 2. Should it be `payable`?
 3. Can the function be front-runned?
 4. Can it be combined with another similar function?
@@ -144,6 +144,7 @@ _inspired from `transmisions11/Solcurity`_
 21. `block.timestamp` remains same during a single transaction even if any complex operation is done.
 22. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
 23. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
+24. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST
 
 ## Modifiers
 
