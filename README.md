@@ -144,7 +144,7 @@ _inspired from `transmisions11/Solcurity`_
 21. `block.timestamp` remains same during a single transaction even if any complex operation is done.
 22. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
 23. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
-24. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST
+24. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
 
 ## Modifiers
 
@@ -152,6 +152,7 @@ _inspired from `transmisions11/Solcurity`_
 2. Are `external calls` avoided?
 3. Is the purpose of the modifier and other important information documented using `natspec`?
 4. Always remember that `modifiers` increase the `Codesize` so use them wisely.
+5. Duplicated require/revert statement should be refactored to a modifier or function.
 
 
 ## Code
@@ -235,8 +236,13 @@ _inspired from `transmisions11/Solcurity`_
     - use bytes32 instead of string to declare a string variable
     - use bit manipulation instead of doing operation with the powers of 2
     - use multiple require statements instead of a single require statement containing the conditions seprated with the && operator
-    - not use safeMath everywhere as some simple operations like division and multiplication can be done easily withour it
+    - not use safeMath everywhere as some simple operations like division and multiplication can be done easily without it
+    - internal functions not used should be removed before deployment to save some gas
+    - don't assign default values to save gas (example: uint i = 0, bool x = false)
+    - multiple mapping from same datatype can be then grouped to a single (from first datatype to the struct containing all destination datatypes)
+    - 
 72. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
+73. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
