@@ -11,6 +11,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
 - [ ] [Smart contract Security Artile by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
 - [x] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
+- [ ] twitter tweets
 ### Audit Reports : 
 - [x] [@code4rena Caviar AMM December 2022](https://code4rena.com/reports/2022-12-caviar)
 - [x] [@code4rena Caviar AMM April 2023](https://code4rena.com/reports/2023-04-caviar)
@@ -30,8 +31,8 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@code4rena Yield-Convex	](https://code4rena.com/reports/2022-01-yield/)
 - [x] [@code4rena Timeswap January 2022](https://code4rena.com/reports/2022-01-timeswap/)
 - [x] [@code4rena Swivel](https://code4rena.com/reports/2021-09-swivel)
-- [x] [@code4rena Wild Credit](https://code4rena.com/reports/2021-09-wildcredit/)
-- [x] [@code4rena Yield micro contest #1](https://code4rena.com/reports/2021-08-yield)
+- [ ] [@code4rena Wild Credit](https://code4rena.com/reports/2021-09-wildcredit/)
+- [ ] [@code4rena Yield micro contest #1](https://code4rena.com/reports/2021-08-yield)
 - [ ] [@code4rena Wild Credit](https://code4rena.com/reports/2021-07-wildcredit)
 - [ ] [@code4rena Yield](https://code4rena.com/reports/2021-05-yield)
 - [ ] [@code4rena Yeti Finance](https://code4rena.com/reports/2021-12-yetifinance/)
