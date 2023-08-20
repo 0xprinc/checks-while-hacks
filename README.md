@@ -61,34 +61,34 @@ _inspired from `transmisions11/Solcurity`_
 16. [NFT](https://github.com/0xprinc/checks-while-hacks#nft) : Issues specific to NFTs.
 
 ## Approach
-- Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
-- Construct a mental model of what you expect the contracts to look like before checking out the code.
-- Glance over the contracts to get a sense of the project's architecture.
-- Compare the architecture to your mental model. Look into areas that are surprising.
-- Identify relevant global and state variables, functions, equations that are involved in the contract.
-- List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
-- Look at areas that interface with external contracts and ensure all assumptions about them are valid.
-- Split the contract as the functions and variables interacting with the external contracts or not.
-- Try to get what are the possibilities during different states of the contract
+1. Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
+2. Construct a mental model of what you expect the contracts to look like before checking out the code.
+3. Glance over the contracts to get a sense of the project's architecture.
+4. Compare the architecture to your mental model. Look into areas that are surprising.
+5. Identify relevant global and state variables, functions, equations that are involved in the contract.
+6. List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
+7. Look at areas that interface with external contracts and ensure all assumptions about them are valid.
+8. Split the contract as the functions and variables interacting with the external contracts or not.
+9. Try to get what are the possibilities during different states of the contract
     + when it is freshly deployed,
     + when it has high amount of each token and every combination,
     + when it is has some bool value come to true which is changing the state of the contract,
     + try to switch between every if and else condition and also try in all ranges of the variables present
-- Do a generic line-by-line review of the contracts.
-- Do another review from the perspective of every actor in the threat model.
-- Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
-- Run static analysers and review their output.
-- Look at related projects and their audits to check for any similar issues or oversights.
-- Try to figure out as many as expected invariants in the contract after getting its context.
-- Try to avoid `transaction order dependence` in the code or find a way to deal with it.
-- Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
-- Comment the "why" as much as possible. 
-- Comment the "what" if using obscure syntax or writing unconventional code.
-- Comment explanations + example inputs/outputs next to complex and fixed point math.
-- Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
-- Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
-- We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
-- Its a centralisation attack when there is given power to the owner to control funds of users in any case.
+10. Do a generic line-by-line review of the contracts.
+11. Do another review from the perspective of every actor in the threat model.
+12. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
+13. Run static analysers and review their output.
+14. Look at related projects and their audits to check for any similar issues or oversights.
+15. Try to figure out as many as expected invariants in the contract after getting its context.
+16. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
+17. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
+18. Comment the "why" as much as possible. 
+19. Comment the "what" if using obscure syntax or writing unconventional code.
+20. Comment explanations + example inputs/outputs next to complex and fixed point math.
+21. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
+22. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
+23. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
+24. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
 
 ## Common questions to ask when we come across any general entity
 1. Will the contract run the same if this entity is removed?
@@ -260,17 +260,17 @@ _inspired from `transmisions11/Solcurity`_
 7. Chainlink's `latestRoundData()` is used, then there should be a check if the return value indicates old data. Otherwise this could lead to old prices according to the [Chainlink documentation](https://docs.chain.link/docs/historical-price-data/#historical-rounds). Also if any variable is used to make sure that the data is not outdated, then while using the two different price feeds, we have to make sure that these two price feeds are updated at comparable amounts of time other wise the difference between their update time will lead to unexpected changes.
 8. Different chains have different block mining time which poses a vulnerability when writing the same code for all the chains while relating the number of blocks and the timestamp.
 9. Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
-10. A problem with using only `approve` function but not the `increaseAllowance` is that, If A approves B 5 tokens and B don't use them, Now, If A approves B 10 tokens to increase the approve value from 5 to 10 tokens, so that B can spend 10 tokens, now B can front run that 10 token transaction to spend both 5 and 10 tokens.
-11. While receiving arbitrary NFT, extend `ERC721Holder` from OpenZeppelin to handle the case when the NFT contract is using `safeTransferFrom` method as this method checks for `onERC721Received` method present in receiver contract.
-12. While using `transfer` or `transferFrom` to send the arbitrary tokens:
+10. A problem with using only `approve` function but not the `increaseAllowance` is that, If A approves B 5 tokens and B don't use them, Now, If A approves B 10 tokens to increase the approve value from 5 to 10 tokens, so that B can spend 10 tokens, now B can front run that 10 token transaction to spend both 5 and 10 tokens. So use `increaseAllowance`, `decreaseAllowance` instead of `approve` and similiar for `safe` versions of those functions.
+12. While receiving arbitrary NFT, extend `ERC721Holder` from OpenZeppelin to handle the case when the NFT contract is using `safeTransferFrom` method as this method checks for `onERC721Received` method present in receiver contract.
+13. While using `transfer` or `transferFrom` to send the arbitrary tokens:
     - Some tokens don't revert on failure, like `ZRX`
     - Some don't return bool value on function call, like `USDT`, `BNB`, `OMG`
     - Even the implementation of `USDT` is different on Polygon and Ethereum.
-13. Chain reorgs is another event for rearrangement of transactions and can even removal of transactions. This event is very common in the chains where the time between consecutive blocks is very less and can reach upto high depths of blocks. Mitigation involves waiting for enough blocks after the transaction has become successful, otherwise reorg can remove that transaction.
-14. The view functions of `CURVE` price oracle are not locked by the reentrancy modifier, so always check for the reentrancy modifier while using the curve oracle view function.
-15. The cost of withdrawing the ether from Arbitrum to Ethereum is very high since Arbitrum uses a rollup architecture, which requires users to pay gas fees to transfer assets between the rollup and the Ethereum mainnet.
-16. There are the copies of NFTs in different chains after a hardfork is done. This lead to sometimes double value a single entity when the protocol functions cross-chain.
-17. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
+14. Chain reorgs is another event for rearrangement of transactions and can even removal of transactions. This event is very common in the chains where the time between consecutive blocks is very less and can reach upto high depths of blocks. Mitigation involves waiting for enough blocks after the transaction has become successful, otherwise reorg can remove that transaction.
+15. The view functions of `CURVE` price oracle are not locked by the reentrancy modifier, so always check for the reentrancy modifier while using the curve oracle view function.
+16. The cost of withdrawing the ether from Arbitrum to Ethereum is very high since Arbitrum uses a rollup architecture, which requires users to pay gas fees to transfer assets between the rollup and the Ethereum mainnet.
+17. There are the copies of NFTs in different chains after a hardfork is done. This lead to sometimes double value a single entity when the protocol functions cross-chain.
+18. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
    
 
 ## External Calls
@@ -320,7 +320,7 @@ _inspired from `transmisions11/Solcurity`_
 2. Are events emitted for every storage mutating function?
 3. Check for correct inheritance, keep it simple and linear. (SWC-125)
 4. Interface contracts generally don't contain the function which is internal as internal functions are made to support the public functions in their logic.
-5. Use a `receive() external payable` function if the contract should accept transferred ETH.
+5. Use a `receive() external payable` function if the contract should accept transferred ETH and don't use if the contract don't accept the ether otherwise the funds could be stucted.
 6. Write down and test invariants about relationships between stored state.
 7. Is the purpose of the contract and how it interacts with others documented using natspec?
 8. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
@@ -396,6 +396,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 37. Governance protocols should be checked between the clash in the priviledges of two different roles so as to have a race condition. And also what are the perks to open functions(public use)
 38. Any extra perk other than the fees for the lender is an opportunity for them to be the borrower themselves as the funds will get returned to them in any case along with those perks.
 39. Better to have a view function or the return variable of the deposit function so that the user know how much they will receive. They don't have to calculate by themselves and something unexpected don't happen.
+40. `Just-In-Time` is actually doing a transaction not just before but `just before`, which means that the transaction should be just before the transaction of the victim. This can be used during the distribution of the yield to the LPs on the basis of their percent share in the pool. If a whale deposits a very big amount in the pool Just-in-Time before the distribution reward called by the owner, then the whale will have the great yield. But he don't deserve it since his tokens are never used by the protocol to earn the yield. Now, after receiving the yield, he just takes out his liquidity from the pool.
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
