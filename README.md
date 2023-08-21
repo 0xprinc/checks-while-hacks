@@ -107,11 +107,12 @@ _inspired from `transmisions11/Solcurity`_
 7. Use full 256 bit types unless packing with other variables.
 8. If it's a public array, is a separate function provided to return the full array?
 9. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
-10. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
-11. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
-12. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
-13. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
-14. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
+10. Enums can be used instead of seperate and related constants.
+11. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+12. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
+13. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
+14. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
+15. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
 
 
 ## Structs
@@ -246,6 +247,7 @@ _inspired from `transmisions11/Solcurity`_
     - revert error(); is better than require(error statement);
     - Try to use the unchecked to increment and decrement to an inrange number
     - Try not to call the full struct if only one or two variables of it are used in the function. Just cache the values of them in a local variable.
+    - cheap way to store constants is to store them in library as an internal variable.
 72. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
 73. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
  
@@ -271,6 +273,7 @@ _inspired from `transmisions11/Solcurity`_
 16. The cost of withdrawing the ether from Arbitrum to Ethereum is very high since Arbitrum uses a rollup architecture, which requires users to pay gas fees to transfer assets between the rollup and the Ethereum mainnet.
 17. There are the copies of NFTs in different chains after a hardfork is done. This lead to sometimes double value a single entity when the protocol functions cross-chain.
 18. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
+19. Consider supporting old NFTs and tokens before the ERC20 and ERC721 standard arrived. For example ERC20: WETH , ERC721: CryptoPunks, EtherRocks
    
 
 ## External Calls
@@ -369,34 +372,35 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 10. Staking, lending in a protocol is different(even if it seems very same)
 11. Always try to see what a dust amount can do, as the dust amount can make anything to non-zero and somethings that work only for absolute zero variable will fail.
 12. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
-13. If your contract is a target for token approvals, do not make arbitrary calls from user input.
-14. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
-15. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
-16. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
-17. Look out for slippage tolerance in Defi DEX protocol, this saves from unexpected results and even protects from front running
-18. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
-19. The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
-20. Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
-21. Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
-22. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
-23. Fees is a part of many protocols, watch out for the `msg.sender`, `fee payer`, `funds` receiver as different users.
-24. In general, `Treasury`, `admin`, `manager` are the different entities that can receive the incentives or fees collected, try to differentiate between them.
-25. In case of protocols having subscriptions, `unregistered`, `de-registered`, `expired` entries are also different, these should be acting according to the documentation.
-26. `Inflation attack` : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
-27. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
-28. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freeze to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
-29. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
-30. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a single transaction will result in same timestamp for all of them.
-31. FlashLoan protection is done by using the condition `lastTimestamp != block.timestamp`, this reduces multiple calls in a single transaction and even in a single block. But this also makes the protocol vulnerable to `DOS`, since if any valid transaction can be frontrunned, then that transaction can not be included in that block, and multiple attacks of this kind on consecutive blocks will cause `DOS`. So, an extra front-running protection should be there.
-32. Some protocols give a choice of the withdrawal token but the same value, this actually reduced capital efficiency if there is no proper ratio of all the tokens is maintained, as the ratio will be not equal but the value provided is equal.
-33. It is a good practice for having a partial tokens withdrawal as if the contract have not enough funds, then by the margin of a very small amount, the funds of a user can get stuck.
-34. Good practice is to give the claim authority to the owner or to the recepient themselves.
-35. Some safety factor checks that are included in the protocol during withdrawal, oracle updating, liquidating a position are made to be protected against the flashloan attacks. But they should not be hardcoded as the adverse conditions in the De-Fi can cross the limits and the withdraw function will not work due to the conditions and hence the funds are stuck and the conditions are depleting :(
-36. Always check and confirm as the expected behaviour whether the voting power is weighted according to the token holding or uniformly distributed. IMO it should be weighted.
-37. Governance protocols should be checked between the clash in the priviledges of two different roles so as to have a race condition. And also what are the perks to open functions(public use)
-38. Any extra perk other than the fees for the lender is an opportunity for them to be the borrower themselves as the funds will get returned to them in any case along with those perks.
-39. Better to have a view function or the return variable of the deposit function so that the user know how much they will receive. They don't have to calculate by themselves and something unexpected don't happen.
-40. `Just-In-Time` is actually doing a transaction not just before but `just before`, which means that the transaction should be just before the transaction of the victim. This can be used during the distribution of the yield to the LPs on the basis of their percent share in the pool. If a whale deposits a very big amount in the pool Just-in-Time before the distribution reward called by the owner, then the whale will have the great yield. But he don't deserve it since his tokens are never used by the protocol to earn the yield. Now, after receiving the yield, he just takes out his liquidity from the pool.
+14. If your contract is a target for token approvals, do not make arbitrary calls from user input.
+15. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
+16. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
+17. Check out for whether governance given to an EOA has infinite minting or approval power(to avoid rug pull, exit scams, circulating price impact)
+18. Look out for slippage tolerance in Defi DEX protocol, this saves from unexpected results and even protects from front running
+19. There is slippage cap in the functions in AMMs but there should also be the deadline set as the slippage cap gives the person assets in a specified range but the real value of the asset can be changed with time, so even if getting the same amount of token, but not at proper time can lead to bad trade.
+20. The main concern while swapping is getting the expected price, so during very high fluctuations, using slippage in form of percentage or deviation from the current price is not a good idea since during high fluctuations, even inside the deadline the price may be very unexpected, so the best way to use swaps is (deadline + expected price) you want rather slippage percentage or absolute difference from the current price.
+21. Try not to approve the token contracts which have onlyOwner functions which have the power to move the funds.
+22. Watch out what if someone with very much money can do(in cases of auction), in these cases a flashloan attack is likely to happen
+23. Functions without any protection(like onlyOwner) are vulnerable to frontrunning so consider what will happen if they are frontrunned.
+24. Fees is a part of many protocols, watch out for the `msg.sender`, `fee payer`, `funds` receiver as different users.
+25. In general, `Treasury`, `admin`, `manager` are the different entities that can receive the incentives or fees collected, try to differentiate between them.
+26. In case of protocols having subscriptions, `unregistered`, `de-registered`, `expired` entries are also different, these should be acting according to the documentation.
+27. `Inflation attack` : It is the attack in which the pool is submitted the tokens externally and now the liquidity is very high and the total supply of mint tokens is very low and hence the formula will give the minimum amount to deposit to be very high and hence DOSing for people with low money.
+28. `maxSlippage` value should not be fixed, because in case of emergency where the price is constantly dropping or increasing, the withdraw function or swap function will revert due to crossing of the `maxSlippage`. But, at that time the transaction should pass otherwise the funds will be stuck forever as the slippage will never come to low.
+29. In a lending and borrowing protocol, this can be a valid finding if at some point of time, the borrower is freeze to borrow the funds or is limited to borrow comparably less funds but is able and have tokens to give collateral, as this will significantly decrease the yield of the lender.
+30. Watch out for all entry points for a position in a protocol for example in case of a protocol build on `uniswap` will have two entry points for adding liquidity, one of them is the protocol and another is through the pool. Try to investigate all the entry points and how can an entry points be used for unintended behaviour.
+31. Oracle saving `block.timestamp` of every transaction in the pool will be vulnerable since if a smart contract doing multiple operation in the pool in a single transaction will result in same timestamp for all of them.
+32. FlashLoan protection is done by using the condition `lastTimestamp != block.timestamp`, this reduces multiple calls in a single transaction and even in a single block. But this also makes the protocol vulnerable to `DOS`, since if any valid transaction can be frontrunned, then that transaction can not be included in that block, and multiple attacks of this kind on consecutive blocks will cause `DOS`. So, an extra front-running protection should be there.
+33. Some protocols give a choice of the withdrawal token but the same value, this actually reduced capital efficiency if there is no proper ratio of all the tokens is maintained, as the ratio will be not equal but the value provided is equal.
+34. It is a good practice for having a partial tokens withdrawal as if the contract have not enough funds, then by the margin of a very small amount, the funds of a user can get stuck.
+35. Good practice is to give the claim authority to the owner or to the recepient themselves.
+36. Some safety factor checks that are included in the protocol during withdrawal, oracle updating, liquidating a position are made to be protected against the flashloan attacks. But they should not be hardcoded as the adverse conditions in the De-Fi can cross the limits and the withdraw function will not work due to the conditions and hence the funds are stuck and the conditions are depleting :(
+37. Always check and confirm as the expected behaviour whether the voting power is weighted according to the token holding or uniformly distributed. IMO it should be weighted.
+38. Governance protocols should be checked between the clash in the priviledges of two different roles so as to have a race condition. And also what are the perks to open functions(public use)
+39. Any extra perk other than the fees for the lender is an opportunity for them to be the borrower themselves as the funds will get returned to them in any case along with those perks.
+40. Better to have a view function or the return variable of the deposit function so that the user know how much they will receive. They don't have to calculate by themselves and something unexpected don't happen.
+41. `Just-In-Time` is actually doing a transaction not just before but `just before`, which means that the transaction should be just before the transaction of the victim. This can be used during the distribution of the yield to the LPs on the basis of their percent share in the pool. If a whale deposits a very big amount in the pool Just-in-Time before the distribution reward called by the owner, then the whale will have the great yield. But he don't deserve it since his tokens are never used by the protocol to earn the yield. Now, after receiving the yield, he just takes out his liquidity from the pool.
+42. Exchanging tokens is not always straight forward(A 🔄 B) either due to lack of the pool between them, or due to the minimization of the overall fees for the exchange(so can go through different path e.g. A 🔄 D 🔄 B), so any protocol fixing a path or the fees will cause a vulnerability.
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
