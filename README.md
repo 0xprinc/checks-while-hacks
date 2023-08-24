@@ -39,7 +39,7 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [@code4rena 88mph](https://code4rena.com/reports/2021-05-88mph/)
 - [ ] [@code4rena Based Loans](https://code4rena.com/reports/2021-04-basedloans/)
 - [ ] [@code4rena Maple Finance](https://code4rena.com/reports/2021-04-maple/)
-- [ ] [@code4rena Arbitrum Security Council Elections](https://code4rena.com/contests/2023-08-arbitrum-security-council-election-system/)
+- [x] [@code4rena Arbitrum Security Council Elections](https://code4rena.com/contests/2023-08-arbitrum-security-council-election-system/)
 - [x] [@code4rena Stader Labs](https://code4rena.com/reports/2023-06-stader)
 
 # Sections 
