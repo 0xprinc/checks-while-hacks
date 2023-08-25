@@ -218,23 +218,24 @@ _inspired from `transmisions11/Solcurity`_
 54. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
 55. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
 56. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
-57. Don't use `erecover` and `signature` to verify the user as these cause signature malleability.
-58. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
-59. Look out for signature replay attacks.
-60. Use underscores or constants for number literals for better readability and also for unexpected human error.
-61. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
-62. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
+57. Don't use `ecrecover` and `signature` in general to verify the user as these cause signature malleability.
+58. While using `ecrocover`, the return value should also be checked to be non-zero(zero states invalid signature).
+59. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
+60. Look out for signature replay attacks.
+61. Use underscores or constants for number literals for better readability and also for unexpected human error.
+62. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
+63. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-63. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
-64. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
-65. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
-66. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
-67. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
-68. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
-69. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
-70. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
-71. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
-72. Some good practices to save some gas involve :
+64. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
+65. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
+66. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
+67. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
+68. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
+69. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
+70. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
+71. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
+72. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
+73. Some good practices to save some gas involve :
     - using ++i instead of i++
     - using calldata to load the info instead of memory
     - not equating with boolean inside the if-else statement
@@ -250,8 +251,8 @@ _inspired from `transmisions11/Solcurity`_
     - Try to use the unchecked to increment and decrement to an inrange number
     - Try not to call the full struct if only one or two variables of it are used in the function. Just cache the values of them in a local variable.
     - cheap way to store constants is to store them in library as an internal variable.
-73. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
-74. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
+74. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
+75. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -265,7 +266,7 @@ _inspired from `transmisions11/Solcurity`_
 8. Different chains have different block mining time which poses a vulnerability when writing the same code for all the chains while relating the number of blocks and the timestamp.
 9. Using `solmate safeTransferLib`, one should also make a function to check whether the token contract exist or not, because this is not included in that library
 10. A problem with using only `approve` function but not the `increaseAllowance` is that, If A approves B 5 tokens and B don't use them, Now, If A approves B 10 tokens to increase the approve value from 5 to 10 tokens, so that B can spend 10 tokens, now B can front run that 10 token transaction to spend both 5 and 10 tokens. So use `increaseAllowance`, `decreaseAllowance` instead of `approve` and similiar for `safe` versions of those functions.
-12. While receiving arbitrary NFT, extend `ERC721Holder` from OpenZeppelin to handle the case when the NFT contract is using `safeTransferFrom` method as this method checks for `onERC721Received` method present in receiver contract.
+12. While receiving arbitrary NFT, extend `ERC721Holder` from OpenZeppelin to handle the case when the NFT contract is using `safeTransferFrom` method as this method checks for `onERC721Received` method present in receiver contract or the reciever is an EOA.
 13. While using `transfer` or `transferFrom` to send the arbitrary tokens:
     - Some tokens don't revert on failure, like `ZRX`
     - Some don't return bool value on function call, like `USDT`, `BNB`, `OMG`
@@ -322,32 +323,33 @@ _inspired from `transmisions11/Solcurity`_
 ## Contract
 
 1. Use an SPDX license identifier.
-2. Are events emitted for every storage mutating function?
-3. Check for correct inheritance, keep it simple and linear. (SWC-125)
-4. Interface contracts generally don't contain the function which is internal as internal functions are made to support the public functions in their logic.
-5. Use a `receive() external payable` function if the contract should accept transferred ETH and don't use if the contract don't accept the ether otherwise the funds could be stucted.
-6. Write down and test invariants about relationships between stored state.
-7. Is the purpose of the contract and how it interacts with others documented using natspec?
-8. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
-9. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
-10. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
-11. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
-12. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
-13. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
-14. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
-15. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
+2. A protocol whose fake code is present online which by mistake gets imported by another protocol can be unexpected. This happend while having duplicate npm packeage names but different code inside.
+3. Are events emitted for every storage mutating function?
+4. Check for correct inheritance, keep it simple and linear. (SWC-125)
+5. Interface contracts generally don't contain the function which is internal as internal functions are made to support the public functions in their logic.
+6. Use a `receive() external payable` function if the contract should accept transferred ETH and don't use if the contract don't accept the ether otherwise the funds could be stucted.
+7. Write down and test invariants about relationships between stored state.
+8. Is the purpose of the contract and how it interacts with others documented using natspec?
+9. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
+10. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
+11. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
+12. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
+13. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
+14. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
+15. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
+16. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
-16. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
-17. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
-18. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
+17. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
+18. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
+19. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
-19. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
-20. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
-21. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
-22. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
-23. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
-24. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
-25. Try not to use the hardcoded address.
+20. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
+21. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
+22. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
+23. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
+24. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
+25. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
+26. Try not to use the hardcoded address.
 
 ## Project
 
@@ -403,6 +405,9 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 40. Better to have a view function or the return variable of the deposit function so that the user know how much they will receive. They don't have to calculate by themselves and something unexpected don't happen.
 41. `Just-In-Time` is actually doing a transaction not just before but `just before`, which means that the transaction should be just before the transaction of the victim. This can be used during the distribution of the yield to the LPs on the basis of their percent share in the pool. If a whale deposits a very big amount in the pool Just-in-Time before the distribution reward called by the owner, then the whale will have the great yield. But he don't deserve it since his tokens are never used by the protocol to earn the yield. Now, after receiving the yield, he just takes out his liquidity from the pool.
 42. Exchanging tokens is not always straight forward(A 🔄 B) either due to lack of the pool between them, or due to the minimization of the overall fees for the exchange(so can go through different path e.g. A 🔄 D 🔄 B), so any protocol fixing a path or the fees will cause a vulnerability.
+43. `FlashLoan` can be related to a `zero duration loan in borrowing and lending protocol` if the interest amount is starts from zero, but the collateral will be required to take the loan.
+44. Always take care of the dust amount as it can make the equality to inequality and also makes the system DOS while playing around the corners of the inequality. [Example](https://twitter.com/0xprinc/status/1691053853050085376)
+45. The receiver of the collateral should not be always same as the recepient of the collateral or not always be specified by the one who pays the loan as this will make any person to pay the debt and take away the collateral as the collateral contains more value.
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
