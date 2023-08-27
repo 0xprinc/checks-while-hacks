@@ -75,6 +75,8 @@ _inspired from `transmisions11/Solcurity`_
     + when it has high amount of each token and every combination,
     + when it is has some bool value come to true which is changing the state of the contract,
     + try to switch between every if and else condition and also try in all ranges of the variables present
+    + what if I swap all the tokens in the pool
+    + what if I borrow all the asset tokens
 10. Do a generic line-by-line review of the contracts.
 11. Do another review from the perspective of every actor in the threat model.
 12. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
@@ -251,8 +253,12 @@ _inspired from `transmisions11/Solcurity`_
     - Try to use the unchecked to increment and decrement to an inrange number
     - Try not to call the full struct if only one or two variables of it are used in the function. Just cache the values of them in a local variable.
     - cheap way to store constants is to store them in library as an internal variable.
+    - better to use uint256 instead of bool instead for using as a switch
+    - use `e` instead writing power of 10 as `**`
 74. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
 75. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
+76. lower size uints are actually less gas efficient. One exception is when packing the variables.
+77. 
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -408,6 +414,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 43. `FlashLoan` can be related to a `zero duration loan in borrowing and lending protocol` if the interest amount is starts from zero, but the collateral will be required to take the loan.
 44. Always take care of the dust amount as it can make the equality to inequality and also makes the system DOS while playing around the corners of the inequality. [Example](https://twitter.com/0xprinc/status/1691053853050085376)
 45. The receiver of the collateral should not be always same as the recepient of the collateral or not always be specified by the one who pays the loan as this will make any person to pay the debt and take away the collateral as the collateral contains more value.
+46. 
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
@@ -416,3 +423,4 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 
 ## NFT
 1. Any smart contract using NFT contracts as input should also include a function to blacklist NFTs so that anyone can not use NFT contracts as inputs that are theft in the past.
+2. NFT SVGs can be used for XSS-Attack(Cross site scripting) if can be changeable by the attacker. So to visually misguide the users.
