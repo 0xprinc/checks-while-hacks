@@ -11,6 +11,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
 - [ ] [Smart contract Security Artile by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
 - [x] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
+- [ ] [DAO voting vulnerabilities MixBytes](https://mixbytes.io/blog/dao-voting-vulnerabilities)
 ### Audit Reports : 
 - [x] [@code4rena Caviar AMM December 2022](https://code4rena.com/reports/2022-12-caviar)
 - [x] [@code4rena Caviar AMM April 2023](https://code4rena.com/reports/2023-04-caviar)
