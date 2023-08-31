@@ -34,7 +34,9 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [Solodit AMM High findings](https://solodit.xyz)
 - [x] [@code4rena Arbitrum Security Council Elections](https://code4rena.com/contests/2023-08-arbitrum-security-council-election-system/)
 - [x] [@code4rena Stader Labs](https://code4rena.com/reports/2023-06-stader)
-- [x] [@code4rena JuiceBox Delegate](https://code4rena.com/reports/2023-05-juicebox) 
+- [x] [@code4rena JuiceBox Delegate](https://code4rena.com/reports/2023-05-juicebox)
+- [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
+
 
 # Sections 
 1. [Approach](https://github.com/0xprinc/checks-while-hacks#approach) : Contains the general points during auditing.
