@@ -37,6 +37,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@code4rena JuiceBox Delegate](https://code4rena.com/reports/2023-05-juicebox)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
+- [ ] [Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
 
 
 # Sections 
