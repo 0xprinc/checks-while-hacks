@@ -37,6 +37,8 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@code4rena Arbitrum Security Council Elections](https://code4rena.com/contests/2023-08-arbitrum-security-council-election-system/)
 - [x] [@code4rena Stader Labs](https://code4rena.com/reports/2023-06-stader)
 - [x] [@code4rena JuiceBox Delegate](https://code4rena.com/reports/2023-05-juicebox)
+- [ ] [@pashov WERC721 - ERC721 wrapper](https://github.com/pashov/audits/blob/master/solo/WERC721-security-review.md)
+- [ ] [@pashov Smoothly - MEV rewards pooling](https://github.com/pashov/audits/blob/master/solo/Smoothly-security-review.md)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
