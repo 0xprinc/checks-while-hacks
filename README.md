@@ -107,18 +107,19 @@ _inspired from `transmisions11/Solcurity`_
 1. When was the variable initialized and how?
 2. Is the visibility set? Can it be more specific such as `external`, `internal`, `private`? 
 3. Can it be `constant`, `immutable`?
-4. Is the purpose of the variable and other important information documented using `natspec`?
-5. Can it be packed with an adjacent storage variable? this is applicable to both local, state and calldata variables.
-6. Can it be packed in a struct with more than 1 other variable?
-7. Use full 256 bit types unless packing with other variables.
-8. If it's a public array, is a separate function provided to return the full array?
-9. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
-10. Enums can be used instead of seperate and related constants.
-11. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
-12. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
-13. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
-14. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
-15. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
+4. Dealing with the state which is stored off-chain can cause the inconsistency as its not possible to PULL data onchain.
+5. Is the purpose of the variable and other important information documented using `natspec`?
+6. Can it be packed with an adjacent storage variable? this is applicable to both local, state and calldata variables.
+7. Can it be packed in a struct with more than 1 other variable?
+8. Use full 256 bit types unless packing with other variables.
+9. If it's a public array, is a separate function provided to return the full array?
+10. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
+11. Enums can be used instead of seperate and related constants.
+12. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+13. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
+14. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
+15. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
+16. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
 
 
 ## Structs
