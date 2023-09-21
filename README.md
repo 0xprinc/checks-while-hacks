@@ -154,6 +154,7 @@ _inspired from `transmisions11/Solcurity`_
 22. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
 23. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
 24. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
+25. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
 
 ## Modifiers
 
@@ -163,7 +164,6 @@ _inspired from `transmisions11/Solcurity`_
 4. Always remember that `modifiers` increase the `Codesize` so use them wisely.
 5. Duplicated require/revert statement should be refactored to a modifier or function.
 6. Best practice to have the nonReentrant modifier come at the first of all the modifiers.
-7. 
 
 
 ## Code
@@ -199,7 +199,7 @@ _inspired from `transmisions11/Solcurity`_
 29. Don't assume `msg.sender` is always a relevant user.
 30. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
 31. Don't use `tx.origin` for authorization. (SWC-115)
-32. Don't use `address.transfer()` or `address.send()`. Use `.call.value(...)("")` instead. As these were used to save from reentrancy attacks since using them gives a constant supply of 2300 gas. But they have a problem that if in future, during some hardfork the gas is decreased then this will lead to the failure of the transaction as if the fallback function is a little bit of gas consuming then this will cause the transaction to fail.
+32. Don't use `address.transfer()` or `address.send()` or limiting the gas in low-level call. Use `.call.value(...)("")` instead. As these were used to save from reentrancy attacks since using them gives a constant supply of 2300 gas. But they have a problem that if in future, during some hardfork the gas is decreased then this will lead to the failure of the transaction as if the fallback function is a little bit of gas consuming then this will cause the transaction to fail.
 33. It is also recommended to not use the transfer or send for transfering the native ETH while interacting with a smart contract.
 34. Prefer using `safeTransferFrom`, `safeMint` for `ERC20` and `ERC721` tokens
 35. When using low-level calls, ensure the contract exists before calling.
@@ -361,6 +361,7 @@ _inspired from `transmisions11/Solcurity`_
 25. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
 26. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
 27. Try not to use the hardcoded address everywhere.
+28. Contract should implement a way to take out the left over dust.
 
 ## Project
 
@@ -370,6 +371,7 @@ _inspired from `transmisions11/Solcurity`_
 4. Use symbolic execution where possible.
 5. Run Slither/Solhint and review all findings.
 6. The coverage for the tests should be 100%
+7. Using `timelock` and `multisig` using the governance actions on the protocol is a good way so that a user can monitor what the governance is going to change in the protocol and can take actions according to it before the change has been made. 
 
 ## DeFi
 __`defi has many vulnerabilities outside solidity, so familiarize yourself with the crypto space and its trends`
@@ -414,12 +416,13 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 38. Governance protocols should be checked between the clash in the priviledges of two different roles so as to have a race condition. And also what are the perks to open functions(public use)
 39. Any extra perk other than the fees for the lender is an opportunity for them to be the borrower themselves as the funds will get returned to them in any case along with those perks.
 40. Better to have a view function or the return variable of the deposit function so that the user know how much they will receive. They don't have to calculate by themselves and something unexpected don't happen.
-41. `Just-In-Time` is actually doing a transaction not just before but `just before`, which means that the transaction should be just before the transaction of the victim. This can be used during the distribution of the yield to the LPs on the basis of their percent share in the pool. If a whale deposits a very big amount in the pool Just-in-Time before the distribution reward called by the owner, then the whale will have the great yield. But he don't deserve it since his tokens are never used by the protocol to earn the yield. Now, after receiving the yield, he just takes out his liquidity from the pool.
-42. Exchanging tokens is not always straight forward(A 🔄 B) either due to lack of the pool between them, or due to the minimization of the overall fees for the exchange(so can go through different path e.g. A 🔄 D 🔄 B), so any protocol fixing a path or the fees will cause a vulnerability.
-43. `FlashLoan` can be related to a `zero duration loan in borrowing and lending protocol` if the interest amount is starts from zero, but the collateral will be required to take the loan.
-44. Always take care of the dust amount as it can make the equality to inequality and also makes the system DOS while playing around the corners of the inequality. [Example](https://twitter.com/0xprinc/status/1691053853050085376)
-45. The receiver of the collateral should not be always same as the recepient of the collateral or not always be specified by the one who pays the loan as this will make any person to pay the debt and take away the collateral as the collateral contains more value.
-46. 
+41. `Just-In-Time` is actually doing a transaction not just before but `just before`, which means that the transaction should be just before the transaction of the victim. This can be used during the distribution of the yield to the LPs on the basis of their percent share in the pool. If a whale deposits a very big amount in the pool Just-in-Time before the distribution reward called by the owner, then the whale will have the great yield. But he don't deserve it since his tokens are never used by the protocol to earn the yield. Now, after receiving the yield, he just takes out his liquidity from the pool. 
+    The mitigation for this can be using `epochs` for batching the users and rewarding them after a certain time period.
+43. Exchanging tokens is not always straight forward(A 🔄 B) either due to lack of the pool between them, or due to the minimization of the overall fees for the exchange(so can go through different path e.g. A 🔄 D 🔄 B), so any protocol fixing a path or the fees will cause a vulnerability.
+44. `FlashLoan` can be related to a `zero duration loan in borrowing and lending protocol` if the interest amount is starts from zero, but the collateral will be required to take the loan.
+45. Always take care of the dust amount as it can make the equality to inequality and also makes the system DOS while playing around the corners of the inequality. [Example](https://twitter.com/0xprinc/status/1691053853050085376)
+46. The receiver of the collateral should not be always same as the recepient of the collateral or not always be specified by the one who pays the loan as this will make any person to pay the debt and take away the collateral as the collateral contains more value.
+47. 
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
