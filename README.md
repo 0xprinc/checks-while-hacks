@@ -39,6 +39,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@code4rena JuiceBox Delegate](https://code4rena.com/reports/2023-05-juicebox)
 - [x] [@pashov WERC721 - ERC721 wrapper](https://github.com/pashov/audits/blob/master/solo/WERC721-security-review.md)
 - [x] [@pashov Smoothly - MEV rewards pooling](https://github.com/pashov/audits/blob/master/solo/Smoothly-security-review.md)
+- [x] [@pashov 1inch Plugins - ERC20 plugins](https://github.com/pashov/audits/blob/master/solo/1inchTokenPlugins-security-review.md)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
@@ -200,48 +201,49 @@ _inspired from `transmisions11/Solcurity`_
 30. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
 31. Don't use `tx.origin` for authorization. (SWC-115)
 32. Don't use `address.transfer()` or `address.send()` or limiting the gas in low-level call. Use `.call.value(...)("")` instead. As these were used to save from reentrancy attacks since using them gives a constant supply of 2300 gas. But they have a problem that if in future, during some hardfork the gas is decreased then this will lead to the failure of the transaction as if the fallback function is a little bit of gas consuming then this will cause the transaction to fail.
-33. It is also recommended to not use the transfer or send for transfering the native ETH while interacting with a smart contract.
-34. Prefer using `safeTransferFrom`, `safeMint` for `ERC20` and `ERC721` tokens
-35. When using low-level calls, ensure the contract exists before calling.
-36. When calling a function with many parameters, use the named argument syntax.
-37. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
-38. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
-39. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
-40. Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
-41. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
-42. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
-43. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
-44. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
-45. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
-46. Use ternary expressions to simplify branching logic wherever possible.
-47. When operating on more than one address, ask yourself what happens if they're the same.
-48. Can someone without spending other then gas fees change the state of the contract.
-49. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
-50. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
-51. You can always convert `bool` to `revert` by using `require` and `revert` to `bool` by using try/catch statement.
-52. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
-53. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
-54. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
-55. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
-56. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
-57. Don't use `ecrecover` and `signature` in general to verify the user as these cause signature malleability.
-58. While using `ecrocover`, the return value should also be checked to be non-zero(zero states invalid signature).
-59. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
-60. Look out for signature replay attacks.
-61. Use underscores or constants for number literals for better readability and also for unexpected human error.
-62. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
-63. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
+33. Also don't try to limit the gas too close for some common operations, the problem with this is that previous Ethereum hardforks have changed gas costs of commonly used opcodes (for example with EIP-150)
+34. It is also recommended to not use the transfer or send for transfering the native ETH while interacting with a smart contract.
+35. Prefer using `safeTransferFrom`, `safeMint` for `ERC20` and `ERC721` tokens
+36. When using low-level calls, ensure the contract exists before calling.
+37. When calling a function with many parameters, use the named argument syntax.
+38. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
+39. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
+40. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
+41. Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
+42. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
+43. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
+44. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
+45. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
+46. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
+47. Use ternary expressions to simplify branching logic wherever possible.
+48. When operating on more than one address, ask yourself what happens if they're the same.
+49. Can someone without spending other then gas fees change the state of the contract.
+50. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
+51. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
+52. You can always convert `bool` to `revert` by using `require` and `revert` to `bool` by using try/catch statement.
+53. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
+54. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
+55. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
+56. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
+57. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
+58. Don't use `ecrecover` and `signature` in general to verify the user as these cause signature malleability.
+59. While using `ecrocover`, the return value should also be checked to be non-zero(zero states invalid signature).
+60. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
+61. Look out for signature replay attacks.
+62. Use underscores or constants for number literals for better readability and also for unexpected human error.
+63. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
+64. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-64. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
-65. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
-66. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
-67. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
-68. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
-69. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
-70. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
-71. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
-72. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
-73. Some good practices to save some gas involve :
+65. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
+66. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
+67. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
+68. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
+69. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
+70. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
+71. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
+72. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
+73. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
+74. Some good practices to save some gas involve :
     - using ++i instead of i++
     - using calldata to load the info instead of memory
     - not equating with boolean inside the if-else statement
@@ -259,10 +261,10 @@ _inspired from `transmisions11/Solcurity`_
     - cheap way to store constants is to store them in library as an internal variable.
     - better to use uint256 instead of bool instead for using as a switch
     - use `e` instead writing power of 10 as `**`
-74. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
-75. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
-76. lower size uints are actually less gas efficient. One exception is when packing the variables.
-77. better to use the dynamic array to save some space that would have been filled to store the length of that array.
+75. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
+76. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
+77. lower size uints are actually less gas efficient. One exception is when packing the variables.
+78. better to use the dynamic array to save some space that would have been filled to store the length of that array.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -287,6 +289,7 @@ _inspired from `transmisions11/Solcurity`_
 17. There are the copies of NFTs in different chains after a hardfork is done. This lead to sometimes double value a single entity when the protocol functions cross-chain.
 18. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
 19. Consider supporting old NFTs and tokens before the ERC20 and ERC721 standard arrived. For example ERC20: WETH , ERC721: CryptoPunks, EtherRocks
+20. Solidity version 0.8.13 & 0.8.14 have a security vulnerability related to assembly blocks that write to memory, which are present in ERC20Plugins contract. The issue is fixed in version 0.8.15 and is explained [here](https://soliditylang.org/blog/2022/06/15/solidity-0.8.15-release-announcement/).
    
 
 ## External Calls
