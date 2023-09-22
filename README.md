@@ -258,12 +258,12 @@ _inspired from `transmisions11/Solcurity`_
     - Try to use the unchecked to increment and decrement to an inrange number
     - Try not to call the full struct if only one or two variables of it are used in the function. Just cache the values of them in a local variable.
     - cheap way to store constants is to store them in library as an internal variable.
-    - better to use uint256 instead of bool instead for using as a switch
+    - better to use uint256 instead of bool for using as a switch
     - use `e` instead writing power of 10 as `**`
 75. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
 76. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
-77. lower size uints are actually less gas efficient. One exception is when packing the variables.
-78. better to use the dynamic array to save some space that would have been filled to store the length of that array.
+77. Lower size uints are actually less gas efficient. One exception is when packing the variables.
+78. Better not to use the dynamic array to save some space that would have been filled to store the length of that array.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
