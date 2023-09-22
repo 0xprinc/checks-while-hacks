@@ -73,29 +73,28 @@ _inspired from `transmisions11/Solcurity`_
 5. Identify relevant global and state variables, functions, equations that are involved in the contract.
 6. List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
 7. Look at areas that interface with external contracts and ensure all assumptions about them are valid.
-8. Split the contract as the functions and variables interacting with the external contracts or not.
-9. Try to get what are the possibilities during different states of the contract
+8. Try to get what are the possibilities during different states of the contract
     + when it is freshly deployed,
     + when it has high amount of each token and every combination,
     + when it is has some bool value come to true which is changing the state of the contract,
     + try to switch between every if and else condition and also try in all ranges of the variables present
     + what if I swap all the tokens in the pool
     + what if I borrow all the asset tokens
-10. Do a generic line-by-line review of the contracts.
-11. Do another review from the perspective of every actor in the threat model.
-12. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
-13. Run static analysers and review their output.
-14. Look at related projects and their audits to check for any similar issues or oversights.
-15. Try to figure out as many as expected invariants in the contract after getting its context.
-16. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
-17. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
-18. Comment the "why" as much as possible. 
-19. Comment the "what" if using obscure syntax or writing unconventional code.
-20. Comment explanations + example inputs/outputs next to complex and fixed point math.
-21. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
-22. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
-23. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
-24. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
+9. Do a generic line-by-line review of the contracts.
+10. Do another review from the perspective of every actor in the threat model.
+11. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
+12. Run static analysers and review their output.
+13. Look at related projects and their audits to check for any similar issues or oversights.
+14. Try to figure out as many as expected invariants in the contract after getting its context.
+15. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
+16. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
+17. Comment the "why" as much as possible. 
+18. Comment the "what" if using obscure syntax or writing unconventional code.
+19. Comment explanations + example inputs/outputs next to complex and fixed point math.
+20. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
+21. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
+22. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
+23. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
 
 ## Common questions to ask when we come across any general entity
 1. Will the contract run the same if this entity is removed?
