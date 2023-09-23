@@ -9,7 +9,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [Defi Attack Vectors `Quillhash`](https://github.com/Quillhash/DeFi-Attack-Vectors)
 - [x] [NFT Attack Vectors `Quillhash`](https://github.com/Quillhash/NFT-Attack-Vectors)
 - [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
-- [ ] [Smart contract Security Artile by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
+- [ ] [Smart contract Security Article by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
 - [x] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
 - [ ] [DAO voting vulnerabilities MixBytes](https://mixbytes.io/blog/dao-voting-vulnerabilities)
 - [ ] Vulnerabilities related to Chainlink
@@ -40,6 +40,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov WERC721 - ERC721 wrapper](https://github.com/pashov/audits/blob/master/solo/WERC721-security-review.md)
 - [x] [@pashov Smoothly - MEV rewards pooling](https://github.com/pashov/audits/blob/master/solo/Smoothly-security-review.md)
 - [x] [@pashov 1inch Plugins - ERC20 plugins](https://github.com/pashov/audits/blob/master/solo/1inchTokenPlugins-security-review.md)
+- [x] [@pashov Solidly V3 AMM - Uniswap V3 fork](https://github.com/pashov/audits/blob/master/solo/SolidlyV3AMM-security-review.md)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
@@ -279,7 +280,7 @@ _inspired from `transmisions11/Solcurity`_
 10. A problem with using only `approve` function but not the `increaseAllowance` is that, If A approves B 5 tokens and B don't use them, Now, If A approves B 10 tokens to increase the approve value from 5 to 10 tokens, so that B can spend 10 tokens, now B can front run that 10 token transaction to spend both 5 and 10 tokens. So use `increaseAllowance`, `decreaseAllowance` instead of `approve` and similiar for `safe` versions of those functions.
 12. While receiving arbitrary NFT, extend `ERC721Holder` from OpenZeppelin to handle the case when the NFT contract is using `safeTransferFrom` method as this method checks for `onERC721Received` method present in receiver contract or the reciever is an EOA.
 13. While using `transfer` or `transferFrom` to send the arbitrary tokens:
-    - Some tokens don't revert on failure, like `ZRX`
+    - Some tokens don't revert on failure, like `ZRX` and `EURS`
     - Some don't return bool value on function call, like `USDT`, `BNB`, `OMG`
     - Even the implementation of `USDT` is different on Polygon and Ethereum.
 14. Chain reorgs is another event for rearrangement of transactions and can even removal of transactions. This event is very common in the chains where the time between consecutive blocks is very less and can reach upto high depths of blocks. Mitigation involves waiting for enough blocks after the transaction has become successful, otherwise reorg can remove that transaction.
