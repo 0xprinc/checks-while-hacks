@@ -42,6 +42,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov 1inch Plugins - ERC20 plugins](https://github.com/pashov/audits/blob/master/solo/1inchTokenPlugins-security-review.md)
 - [x] [@pashov Solidly V3 AMM - Uniswap V3 fork](https://github.com/pashov/audits/blob/master/solo/SolidlyV3AMM-security-review.md)
 - [x] [@pashov Museum of Mahomes - ERC721 collection](https://github.com/pashov/audits/blob/master/solo/MuseumOfMahomes-security-review.md#l-04-contract-is-not-working-as-a-state-machine)
+- [x] [@pashov gTrade - GNS staking & vesting](https://github.com/pashov/audits/blob/master/solo/gTrade-security-review.md)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
