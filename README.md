@@ -41,6 +41,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov Solidly V3 AMM - Uniswap V3 fork](https://github.com/pashov/audits/blob/master/solo/SolidlyV3AMM-security-review.md)
 - [x] [@pashov Museum of Mahomes - ERC721 collection](https://github.com/pashov/audits/blob/master/solo/MuseumOfMahomes-security-review.md#l-04-contract-is-not-working-as-a-state-machine)
 - [x] [@pashov gTrade - GNS staking & vesting](https://github.com/pashov/audits/blob/master/solo/gTrade-security-review.md)
+- [x] [@pashov Baton Launchpad - ERC721A Launchpad](https://github.com/pashov/audits/blob/master/solo/BatonLaunchpad-security-review.md)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
@@ -290,6 +291,7 @@ _inspired from `transmisions11/Solcurity`_
 18. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
 19. Consider supporting old NFTs and tokens before the ERC20 and ERC721 standard arrived. For example ERC20: WETH , ERC721: CryptoPunks, EtherRocks
 20. Solidity version 0.8.13 & 0.8.14 have a security vulnerability related to assembly blocks that write to memory, which are present in ERC20Plugins contract. The issue is fixed in version 0.8.15 and is explained [here](https://soliditylang.org/blog/2022/06/15/solidity-0.8.15-release-announcement/).
+21. The optimization done by making the functions payable(so no opcode is written to check whether the transaction has any value) also need a withdraw function other wise funds will be stuck. There are implementations of functions in @openzeppelin that are payable but not supposed to paid any value. Such as `ERC721AUpgradeable`, `ERC1967Proxy` etc. 
    
 
 ## External Calls
@@ -357,14 +359,15 @@ _inspired from `transmisions11/Solcurity`_
 19. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
 20. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
-21. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them.
-22. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
-23. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
-24. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
-25. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
-26. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
-27. Try not to use the hardcoded address everywhere.
-28. Contract should implement a way to take out the left over dust.
+21. Always check for the presence of the presence of calling function in the contract that is owner of the callee contract's only owner function.
+22. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them. For example : The fee extraction function is not present in the owner contract.
+23. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
+24. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
+25. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
+26. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
+27. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
+28. Try not to use the hardcoded address everywhere.
+29. Contract should implement a way to take out the left over dust.
 
 ## Project
 
