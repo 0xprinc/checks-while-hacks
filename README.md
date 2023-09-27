@@ -42,6 +42,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov Museum of Mahomes - ERC721 collection](https://github.com/pashov/audits/blob/master/solo/MuseumOfMahomes-security-review.md#l-04-contract-is-not-working-as-a-state-machine)
 - [x] [@pashov gTrade - GNS staking & vesting](https://github.com/pashov/audits/blob/master/solo/gTrade-security-review.md)
 - [x] [@pashov Baton Launchpad - ERC721A Launchpad](https://github.com/pashov/audits/blob/master/solo/BatonLaunchpad-security-review.md)
+- [x] [@pashov Topia Staking - lockup staking](https://github.com/pashov/audits/blob/master/solo/TopiaStaking-security-review.md)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
@@ -83,20 +84,21 @@ _inspired from `transmisions11/Solcurity`_
     + what if I swap all the tokens in the pool
     + what if I borrow all the asset tokens
 9. Do a generic line-by-line review of the contracts.
-10. Do another review from the perspective of every actor in the threat model.
-11. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
-12. Run static analysers and review their output.
-13. Look at related projects and their audits to check for any similar issues or oversights.
-14. Try to figure out as many as expected invariants in the contract after getting its context.
-15. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
-16. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
-17. Comment the "why" as much as possible. 
-18. Comment the "what" if using obscure syntax or writing unconventional code.
-19. Comment explanations + example inputs/outputs next to complex and fixed point math.
-20. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
-21. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
-22. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
-23. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
+10. While approaching a function, it is important that we take atleast one pair of input and calculate its output. This hardens our mental model.
+11. Do another review from the perspective of every actor in the threat model.
+12. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
+13. Run static analysers and review their output.
+14. Look at related projects and their audits to check for any similar issues or oversights.
+15. Try to figure out as many as expected invariants in the contract after getting its context.
+16. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
+17. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
+18. Comment the "why" as much as possible. 
+19. Comment the "what" if using obscure syntax or writing unconventional code.
+20. Comment explanations + example inputs/outputs next to complex and fixed point math.
+21. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
+22. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
+23. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
+24. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
 
 ## Common questions to ask when we come across any general entity
 1. Will the contract run the same if this entity is removed?
@@ -343,31 +345,32 @@ _inspired from `transmisions11/Solcurity`_
 4. Check for correct inheritance, keep it simple and linear. (SWC-125)
 5. Interface contracts generally don't contain the function which is internal as internal functions are made to support the public functions in their logic.
 6. Use a `receive() external payable` function if the contract should accept transferred ETH and don't use if the contract don't accept the ether otherwise the funds could be stucted.
-7. Some contracts are not able to call the transfer function but can call the approve function. This makes the need for the transferFrom function to be present in all the token implementations whether erc721, or erc20 or any.
-8. Write down and test invariants about relationships between stored state.
-9. Is the purpose of the contract and how it interacts with others documented using natspec?
-10. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
-11. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
-12. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
-13. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
-14. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
-15. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
-16. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
-17. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
+7. Its sometimes a valid finding if any comment(with a warning) is written and is not implemented in the code as this ia a vulnerability with low likelihood.
+8. Some contracts are not able to call the transfer function but can call the approve function. This makes the need for the transferFrom function to be present in all the token implementations whether erc721, or erc20 or any.
+9. Write down and test invariants about relationships between stored state.
+10. Is the purpose of the contract and how it interacts with others documented using natspec?
+11. The contract should be marked `abstract` if another contract must inherit it to unlock its full functionality.
+12. Emit an appropriate event for any non-immutable variable set in the constructor that emits an event when mutated elsewhere.
+13. Avoid over-inheritance as it masks complexity and encourages over-abstraction.
+14. Always use the named import syntax to explicitly declare which contracts are being imported from another file.
+15. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
+16. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
+17. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
+18. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
-18. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
-19. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
-20. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
+19. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
+20. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
+21. The functions should be grouped in the following order as given in the solidity style guide for the auditing process should be smooth <br>
           { constructor, receive function (if exists), fallback function (if exists), external, public, internal, private, view and pure functions last }
-21. Always check for the presence of the presence of calling function in the contract that is owner of the callee contract's only owner function.
-22. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them. For example : The fee extraction function is not present in the owner contract.
-23. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
-24. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
-25. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
-26. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
-27. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
-28. Try not to use the hardcoded address everywhere.
-29. Contract should implement a way to take out the left over dust.
+22. Always check for the presence of the presence of calling function in the contract that is owner of the callee contract's only owner function.
+23. Always look for making an extra function(claim) if there is possibility of the funds to be stuck in the contract or the contract is having a receive or fallback function. This can be seen in the case of airdrops that are generally landed on the protocol contract and a claim function should be made to retrieve them. For example : The fee extraction function is not present in the owner contract.
+24. In the beginning after deployment of the contract, the state variables are easy to manipulate(especially in defi) since there is not much of the funds locked in the contract, and hence not very much of the funds are required to manipulate the state of the contract, this can lead to the contract being more vulnerable in start
+25. If the contract is an implementation of an another protocol, then to maintain the consistency, we should check all the formulas to be same in both. This can happen in the strategy protocols that makes strategy for another defi protocols but lacks giving the users same values or outputs.
+26. While using the proxy, Initialize the contract in the same transaction as initialization needs a call to initialize function.
+27. Using same data feed of two related tokens is vulnerable, e.g. using datafeed for `USDC` for `DAI` will be vulnerable as if one depegs, then the other price will also be affected in the protocol.
+28. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
+29. Try not to use the hardcoded address everywhere.
+30. Contract should implement a way to take out the left over dust.
 
 ## Project
 
