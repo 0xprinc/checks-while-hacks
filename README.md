@@ -293,7 +293,7 @@ _inspired from `transmisions11/Solcurity`_
 18. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
 19. Consider supporting old NFTs and tokens before the ERC20 and ERC721 standard arrived. For example ERC20: WETH , ERC721: CryptoPunks, EtherRocks
 20. Solidity version 0.8.13 & 0.8.14 have a security vulnerability related to assembly blocks that write to memory, which are present in ERC20Plugins contract. The issue is fixed in version 0.8.15 and is explained [here](https://soliditylang.org/blog/2022/06/15/solidity-0.8.15-release-announcement/).
-21. The optimization done by making the functions payable(so no opcode is written to check whether the transaction has any value) also need a withdraw function other wise funds will be stuck. There are implementations of functions in @openzeppelin that are payable but not supposed to paid any value. Such as `ERC721AUpgradeable`, `ERC1967Proxy` etc. 
+21. The optimization done by making the functions payable(so no opcode is written to check whether the transaction has any value) also need a withdraw function other wise funds will be stuck. There are implementations of functions in @openzeppelin that are payable but not supposed to paid any value. Such as `ERC721AUpgradeable`, `ERC1967Proxy`, `BeaconProxy` etc. 
    
 
 ## External Calls
