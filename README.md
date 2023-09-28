@@ -136,30 +136,32 @@ _inspired from `transmisions11/Solcurity`_
 
 1. Should it be `external` or `internal`? For instance, the function not called by the same contract should be marked as external.
 2. Should it be `payable`?
-3. Can the function be front-runned?
-4. Can it be combined with another similar function?
-5. If the test coverage is not 100% then also check for the parameters ordering during function calls.
-6. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
-7. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
-8. Are the multiple arrays taken have same length?
-9. Is the `checks` before `effects` pattern followed? (SWC-107)
-10. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
-11. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
-12. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
-13. Write down and test invariants about state before a function can run correctly.
-14. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
-15. Take care when naming functions, because people will assume behaviour based on the name.
-16. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
-17. Are all arguments, return values, side effects and other information documented using `natspec`?
-18. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
-19. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
-20. Are return values always assigned?, sometimes not assigning values is better.
-21. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
-22. `block.timestamp` remains same during a single transaction even if any complex operation is done.
-23. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
-24. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
-25. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
-26. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
+3. Do this function need a counter part. Example : Deposit function has Withdraw function.
+4. Can the function be front-runned?
+5. Can it be combined with another similar function?
+6. If the test coverage is not 100% then also check for the parameters ordering during function calls.
+7. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
+8. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
+9. Are the multiple arrays taken have same length?
+10. Is the `checks` before `effects` pattern followed? (SWC-107)
+11. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
+12. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
+13. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
+14. What if I call the function one time with the value of X and Y times with the value X/Y.
+15. Write down and test invariants about state before a function can run correctly.
+16. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
+17. Take care when naming functions, because people will assume behaviour based on the name.
+18. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
+19. Are all arguments, return values, side effects and other information documented using `natspec`?
+20. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
+21. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
+22. Are return values always assigned?, sometimes not assigning values is better.
+23. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
+24. `block.timestamp` remains same during a single transaction even if any complex operation is done.
+25. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
+26. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
+27. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
+28. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
 
 ## Modifiers
 
