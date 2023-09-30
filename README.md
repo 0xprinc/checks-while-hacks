@@ -5,10 +5,11 @@ _inspired from `transmisions11/Solcurity`_
 
 ## To-Do List
 - [x] [`Solcurity`](https://github.com/transmissions11/solcurity)
-- [x] [Solidity Attack Vectors `Quillhash`](https://github.com/Quillhash/Solidity-Attack-Vectors)
-- [x] [Defi Attack Vectors `Quillhash`](https://github.com/Quillhash/DeFi-Attack-Vectors)
-- [x] [NFT Attack Vectors `Quillhash`](https://github.com/Quillhash/NFT-Attack-Vectors)
-- [x] [smart-contract-vulnerabilities by @0xKaden](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
+- [x] [`Quillhash` Solidity Attack Vectors](https://github.com/Quillhash/Solidity-Attack-Vectors)
+- [x] [`Quillhash` Defi Attack Vectors](https://github.com/Quillhash/DeFi-Attack-Vectors)
+- [x] [`Quillhash` NFT Attack Vectors](https://github.com/Quillhash/NFT-Attack-Vectors)
+- [x] [`0xKaden` smart-contract-vulnerabilities](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
+- [x] [`OpenCoreCH` smart-contract-auditing-heuristics](https://github.com/OpenCoreCH/smart-contract-auditing-heuristics)
 - [ ] [Smart contract Security Article by Jeffrey Scholz](https://www.rareskills.io/post/smart-contract-security)
 - [x] [NFT Attacks by @volodya](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
 - [ ] [DAO voting vulnerabilities MixBytes](https://mixbytes.io/blog/dao-voting-vulnerabilities)
@@ -118,13 +119,14 @@ _inspired from `transmisions11/Solcurity`_
 7. Can it be packed in a struct with more than 1 other variable?
 8. Use full 256 bit types unless packing with other variables.
 9. If it's a public array, is a separate function provided to return the full array?
-10. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
-11. Enums can be used instead of seperate and related constants.
-12. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
-13. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
-14. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
-15. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
-16. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
+10. While trying to delete something from the array, there are two ways : one is to replace that from the last entry and then pop, and another is to delete that index and shift every succeding element backwards by one.
+11. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
+12. Enums can be used instead of seperate and related constants.
+13. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+14. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
+15. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
+16. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
+17. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
 
 
 ## Structs
@@ -144,25 +146,26 @@ _inspired from `transmisions11/Solcurity`_
 7. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
 8. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
 9. Are the multiple arrays taken have same length?
-10. Is the `checks` before `effects` pattern followed? (SWC-107)
-11. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
-12. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
-13. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
-14. What if I call the function one time with the value of X and Y times with the value X/Y.
-15. Write down and test invariants about state before a function can run correctly.
-16. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
-17. Take care when naming functions, because people will assume behaviour based on the name.
-18. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
-19. Are all arguments, return values, side effects and other information documented using `natspec`?
-20. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
-21. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
-22. Are return values always assigned?, sometimes not assigning values is better.
-23. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
-24. `block.timestamp` remains same during a single transaction even if any complex operation is done.
-25. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
-26. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
-27. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
-28. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
+10. What if the two arguments provided to be same, i.e. sender == receiver, source =  destination etc.
+11. Is the `checks` before `effects` pattern followed? (SWC-107)
+12. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
+13. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
+14. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
+15. What if I call the function one time with the value of X and Y times with the value X/Y.
+16. Write down and test invariants about state before a function can run correctly.
+17. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
+18. Take care when naming functions, because people will assume behaviour based on the name.
+19. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
+20. Are all arguments, return values, side effects and other information documented using `natspec`?
+21. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
+22. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
+23. Are return values always assigned?, sometimes not assigning values is better.
+24. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
+25. `block.timestamp` remains same during a single transaction even if any complex operation is done.
+26. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
+27. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
+28. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
+29. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
 
 ## Modifiers
 
@@ -376,6 +379,7 @@ _inspired from `transmisions11/Solcurity`_
 28. Is the contract upgradeable?  If yes, then are there any storage slots reserved?
 29. Try not to use the hardcoded address everywhere.
 30. Contract should implement a way to take out the left over dust.
+31. Contracts that use `WETH` instead of `ETH`(or any two interchangeably used tokens) may have the invariant of ETH balance to be 0 or different logic to handle it. This can be a knob to exploit the invariants related to them.
 
 ## Project
 
@@ -436,7 +440,6 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 44. `FlashLoan` can be related to a `zero duration loan in borrowing and lending protocol` if the interest amount is starts from zero, but the collateral will be required to take the loan.
 45. Always take care of the dust amount as it can make the equality to inequality and also makes the system DOS while playing around the corners of the inequality. [Example](https://twitter.com/0xprinc/status/1691053853050085376)
 46. The receiver of the collateral should not be always same as the recepient of the collateral or not always be specified by the one who pays the loan as this will make any person to pay the debt and take away the collateral as the collateral contains more value.
-47. 
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
