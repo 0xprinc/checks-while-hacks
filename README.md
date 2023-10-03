@@ -45,6 +45,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov gTrade - GNS staking & vesting](https://github.com/pashov/audits/blob/master/solo/gTrade-security-review.md)
 - [x] [@pashov Baton Launchpad - ERC721A Launchpad](https://github.com/pashov/audits/blob/master/solo/BatonLaunchpad-security-review.md)
 - [x] [@pashov Topia Staking - lockup staking](https://github.com/pashov/audits/blob/master/solo/TopiaStaking-security-review.md)
+- [x] [@pashov Pino - proxy interactions with DeFi protocols](https://github.com/pashov/audits/blob/master/solo/Pino-security-review.md)
 - [ ] [@code4rena Fraxlend (Frax Finance)](https://code4rena.com/reports/2022-08-frax)
 - [ ] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
