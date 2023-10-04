@@ -129,6 +129,7 @@ _inspired from `transmisions11/Solcurity`_
 15. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
 16. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
 17. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction
+18. Always remember that while comparing two `uint`s, don't use `a-b > 0`, as this will either return `true` or will `revert`, as `a - b` will not be an `uint`.
 
 
 ## Structs
