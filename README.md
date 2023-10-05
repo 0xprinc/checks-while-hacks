@@ -10,7 +10,6 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [`Quillhash` NFT Attack Vectors](https://github.com/Quillhash/NFT-Attack-Vectors)
 - [x] [`0xKaden` smart-contract-vulnerabilities](https://github.com/kadenzipfel/smart-contract-vulnerabilities)
 - [x] [`OpenCoreCH` smart-contract-auditing-heuristics](https://github.com/OpenCoreCH/smart-contract-auditing-heuristics)
-- [ ] [`Jeffrey Scholz` Smart contract Security Article](https://www.rareskills.io/post/smart-contract-security)
 - [x] [`volodya` NFT Attacks](https://0xvolodya.hashnode.dev/nft-attacks#heading-erc-777-tokens)
 - [ ] [`MixBytes` DAO voting vulnerabilities](https://mixbytes.io/blog/dao-voting-vulnerabilities)
 - [ ] [`chinmayf` The risks of EIP712](https://medium.com/@chinmayf/auditors-digest-the-risks-of-eip712-5a0fc57e3837)
