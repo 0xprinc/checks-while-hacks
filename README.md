@@ -407,10 +407,11 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 6. Watch out for rebasing tokens. If they are unsupported, ensure that property is documented.
 7. Watch out for ERC-777 tokens. Even a token you trust could preform reentrancy if it's an ERC-777. ERC721 are also vulnerable.
 8. Watch out for fee-on-transfer tokens. If they are unsupported, ensure that property is documented.
-9. Watch out for tokens that use too many or too few decimals. Ensure the max and min supported values are documented.
-10. Staking, lending in a protocol is different(even if it seems very same)
-11. Always try to see what a dust amount can do, as the dust amount can make anything to non-zero and somethings that work only for absolute zero variable will fail.
-12. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
+9. Different tokens used in any contract should also have a different price fluctuations, time of oracle data fetching and decimals storages due to different implementations of them.
+10. Watch out for tokens that use too many or too few decimals. Ensure the max and min supported values are documented.
+11. Staking, lending in a protocol is different(even if it seems very same)
+12. Always try to see what a dust amount can do, as the dust amount can make anything to non-zero and somethings that work only for absolute zero variable will fail.
+13. Be careful of relying on the raw token balance of a contract to determine earnings. Contracts which provide a way to recover assets sent directly to them can mess up share price functions that rely on the raw Ether or token balances of an address.
 14. If your contract is a target for token approvals, do not make arbitrary calls from user input.
 15. Always set a minimum deposit balance to revoke the privilege given to people depositing zero amount
 16. One of the best optimisations can be decreasing the impermanent loss(maybe divide the loss among more people since the overall loss can not be decreased as this will affect the price impact on the AMM)
