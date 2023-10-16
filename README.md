@@ -124,13 +124,15 @@ _inspired from `transmisions11/Solcurity`_
 9. If it's a public array, is a separate function provided to return the full array?
 10. While trying to delete something from the array, there are two ways : one is to replace that from the last entry and then pop, and another is to delete that index and shift every succeding element backwards by one.
 11. Check that the size of the array to be limited, otherwise it may lead to gas shortage to complete the transaction.
-12. Enums can be used instead of seperate and related constants.
-13. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
-14. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
-15. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
-16. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
-17. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction. The refund is capped to the half of the gas that was spent in the transaction. and before that, it refunds 15e3 for resetting a storage slot and 10e3 for freeing the slot from storage usage.
-18. Always remember that while comparing two `uint`s, don't use `a-b > 0`, as this will either return `true` or will `revert`, as `a - b` will not be an `uint`.
+12. Do the order of the entries in an array matter?
+13. Mappings can be made traversable by the use of linked list(every entry is pointing to the next entry).
+14. Enums can be used instead of seperate and related constants.
+15. Only use `private` to intentionally prevent child contracts from accessing the variable, prefer `internal` for flexibility.
+16. Uninitialized local storage variables(variables that take their value from a state variable) can point to unexpected storage locations in the contract, which can lead to intentional or unintentional vulnerabilities, so mark them as memory, calldata and storage as per the requirement.
+17. The variables that store value of the past should also have the functionality to have it removed as well otherwise the gas fee for the operations will be increasing as the variable storing values increase in cases of array as we have to traverse all the previous entries also.
+18. Variables that need to be very precise(number of months/year elapsed) should not get the precision error(as 1.99 month should not be considered as 1 month although 1.99 day can be considered as 1 because of the time error).
+19. Ethereum incentivize the efficient use of storage. When we delete a variable, there is a gas refund that appears in the transaction. The refund is capped to the half of the gas that was spent in the transaction. and before that, it refunds 15e3 for resetting a storage slot and 10e3 for freeing the slot from storage usage.
+20. Always remember that while comparing two `uint`s, don't use `a-b > 0`, as this will either return `true` or will `revert`, as `a - b` will not be an `uint`.
 
 
 ## Structs
