@@ -281,6 +281,7 @@ _inspired from `transmisions11/Solcurity`_
 76. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
 77. Lower size uints are actually less gas efficient. One exception is when packing the variables.
 78. Better not to use the dynamic array to save some space that would have been filled to store the length of that array.
+79. We can also simulate a transaction in a contract by making a function that simulates what is needed and also reverting on every result but with a custom message for each reason and can then be used in a `try and catch` statement to be able to have the results of the simulated transaction.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
