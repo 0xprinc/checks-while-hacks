@@ -47,6 +47,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov Topia Staking - lockup staking](https://github.com/pashov/audits/blob/master/solo/TopiaStaking-security-review.md)
 - [x] [@pashov Pino - proxy interactions with DeFi protocols](https://github.com/pashov/audits/blob/master/solo/Pino-security-review.md)
 - [x] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
+- [ ] [@paladin sec LayerZero](https://paladinsec.co/projects/layerzero/)
 - [ ] [@paladin Sec Ghast Protocol](https://paladinsec.co/projects/ghast-protocol/)
 - [ ] [@cantina solady review](https://cantina.xyz/crowdfund/solady)
 - [ ] [@code4rena Fraxlend (Frax Finance)](https://code4rena.com/reports/2022-08-frax)
