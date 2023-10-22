@@ -149,31 +149,32 @@ _inspired from `transmisions11/Solcurity`_
 2. Should it be `payable`?
 3. Do this function need a counter part. Example : Deposit function has Withdraw function.
 4. Can the function be front-runned?
-5. Can it be combined with another similar function?
-6. If the test coverage is not 100% then also check for the parameters ordering during function calls.
-7. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
-8. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
-9. Are the multiple arrays taken have same length?
-10. What if the two arguments provided to be same, i.e. sender == receiver, source =  destination etc.
-11. Is the `checks` before `effects` pattern followed? (SWC-107)
-12. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
-13. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
-14. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
-15. What if I call the function one time with the value of X and Y times with the value X/Y.
-16. Write down and test invariants about state before a function can run correctly.
-17. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
-18. Take care when naming functions, because people will assume behaviour based on the name.
-19. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
-20. Are all arguments, return values, side effects and other information documented using `natspec`?
-21. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
-22. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
-23. Are return values always assigned?, sometimes not assigning values is better.
-24. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
-25. `block.timestamp` remains same during a single transaction even if any complex operation is done.
-26. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
-27. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
-28. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
-29. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
+5. In what conditions the function can be stopped unfortunately.
+6. Can it be combined with another similar function?
+7. If the test coverage is not 100% then also check for the parameters ordering during function calls.
+8. Validate all parameters are within safe bounds, even if the function can only be called by a trusted users.
+9. Always make sure that the argument passed is a valid argument/ behaves as expected in its full range of taking values.
+10. Are the multiple arrays taken have same length?
+11. What if the two arguments provided to be same, i.e. sender == receiver, source =  destination etc.
+12. Is the `checks` before `effects` pattern followed? (SWC-107)
+13. Is the `update` before `call` pattern followed? (Reentrancy) Sometimes even the modifier can not save from reentrancy.
+14. Are the correct modifiers applied, such as `onlyOwner`/`requiresAuth`?
+15. Are the `modifiers`(if more than one) written in function in correct order, because the change in order will change the code?
+16. What if I call the function one time with the value of X and Y times with the value X/Y.
+17. Write down and test invariants about state before a function can run correctly.
+18. Write down and test invariants about the return or any changes to state after a function has run and try to include all edge cases as input.
+19. Take care when naming functions, because people will assume behaviour based on the name.
+20. If a function is intentionally unsafe (to save gas, etc), use an unwieldy name to draw attention to its risk.
+21. Are all arguments, return values, side effects and other information documented using `natspec`?
+22. Only use `private` to intentionally prevent child contracts from calling the function, prefer `internal` for flexibility.
+23. Use `virtual` if there are legitimate (and safe) instances where a child contract may wish to override the function's behaviour.
+24. Are return values always assigned?, sometimes not assigning values is better.
+25. Try not to use `msg.value`, after its value has been used as this can cause the loss of funds of the contract. `msg.value` can be used in case of fees payment which is very small and protocol exclusive.
+26. `block.timestamp` remains same during a single transaction even if any complex operation is done.
+27. Its better to store the values of `state variables` in `local variables` when the state variables are called multiple times, as `MLOAD` is cheaper than `SLOAD`. This process is called `variable caching`.
+28. Try to provide the values of state variables as parameter to internal functions as this will minimize `SLOAD` which is expensive than `CALLDATACOPY`.
+29. `OnlyOwner` function should be marked as `payable`, this will lower cost for legitimate callers due to avoidance of CALLVALUE, DUP1, JUMPI, REVERT, POP, JUMPDEST. (Practice this iff the security is not sacrificed).
+30. `transferFrom` function should be a mandatory function in every token implementation if they support arbitrary addresses as there are smart contracts that can only approve the tokens but not initiate the transaction using the `transfer` function.
 
 ## Modifiers
 
@@ -389,6 +390,7 @@ _inspired from `transmisions11/Solcurity`_
 29. Try not to use the hardcoded address everywhere.
 30. Contract should implement a way to take out the left over dust.
 31. Contracts that use `WETH` instead of `ETH`(or any two interchangeably used tokens) may have the invariant of ETH balance to be 0 or different logic to handle it. This can be a knob to exploit the invariants related to them.
+32. Is all the information that is stored conserved after any major change is happened. What happens to the state stored in the contracts that are stored in the contract address which is updated after some operation. For example the manager contract address if updated in the engine contract then what happens to all the information that is stored in the manager contract.
 
 ## Project
 
