@@ -52,6 +52,7 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [@paladin Sec Ghast Protocol](https://paladinsec.co/projects/ghast-protocol/)
 - [ ] [@cantina solady review](https://cantina.xyz/crowdfund/solady)
 - [ ] [@code4rena Fraxlend (Frax Finance)](https://code4rena.com/reports/2022-08-frax)
+- [ ] [@code4rena Good Entry](https://code4rena.com/contests/2023-08-good-entry#top)
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
 - [ ] [@code4rena delegate](https://code4rena.com/contests/2023-09-delegate#top)
