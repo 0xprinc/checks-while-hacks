@@ -15,6 +15,7 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [`MixBytes` DAO voting vulnerabilities](https://mixbytes.io/blog/dao-voting-vulnerabilities)
 - [ ] [`chinmayf` The risks of EIP712](https://medium.com/@chinmayf/auditors-digest-the-risks-of-eip712-5a0fc57e3837)
 - [ ] [@0xBeirao Ultimate solidity checklist](https://www.beirao.xyz/blog/Security-checklist)
+- [ ] [Decurity/audit-checklists](https://github.com/Decurity/audit-checklists/blob/master/cdp.md)
 ### Audit Reports : 
 - [x] [@code4rena Caviar AMM December 2022](https://code4rena.com/reports/2022-12-caviar)
 - [x] [@code4rena Caviar AMM April 2023](https://code4rena.com/reports/2023-04-caviar)
