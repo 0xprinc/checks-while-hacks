@@ -51,6 +51,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [ ] [@paladin sec LayerZero](https://paladinsec.co/projects/layerzero/)
 - [ ] [@paladin Sec Ghast Protocol](https://paladinsec.co/projects/ghast-protocol/)
+- [ ] [@pashov Lumin - fixed-rate peer-to-peer lending](https://github.com/pashov/audits/blob/master/solo/Lumin-security-review.md)
 - [ ] [@cantina solady review](https://cantina.xyz/crowdfund/solady)
 - [ ] [@code4rena Fraxlend (Frax Finance)](https://code4rena.com/reports/2022-08-frax)
 - [ ] [@code4rena Good Entry](https://code4rena.com/contests/2023-08-good-entry#top)
