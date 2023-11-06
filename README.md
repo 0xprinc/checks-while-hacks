@@ -84,33 +84,34 @@ _inspired from `transmisions11/Solcurity`_
 1. Read the project's docs, specs, and whitepaper to understand what the smart contracts are meant to do.
 2. Construct a mental model of what you expect the contracts to look like before checking out the code.
 3. Glance over the contracts to get a sense of the project's architecture.
-4. Compare the architecture to your mental model. Look into areas that are surprising.
-5. Identify relevant global and state variables, functions, equations that are involved in the contract.
-6. List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
-7. Look at areas that interface with external contracts and ensure all assumptions about them are valid.
-8. Try to get what are the possibilities during different states of the contract
+4. While going through a contract, make sure to write all the assumptions(about external contracts) and expectations(from external contracts) and questions related to it.
+5. Compare the architecture to your mental model. Look into areas that are surprising.
+6. Identify relevant global and state variables, functions, equations that are involved in the contract.
+7. List all the invariants related to them and try to find a way to break them to get a loop hole in the implementation.
+8. Look at areas that interface with external contracts and ensure all assumptions about them are valid.
+9. Try to get what are the possibilities during different states of the contract
     + when it is freshly deployed,
     + when it has high amount of each token and every combination,
     + when it is has some bool value come to true which is changing the state of the contract,
     + try to switch between every if and else condition and also try in all ranges of the variables present
     + what if I swap all the tokens in the pool
     + what if I borrow all the asset tokens
-9. Do a generic line-by-line review of the contracts.
-10. While approaching a function, it is important that we take atleast one pair of input and calculate its output. This hardens our mental model.
-11. Do another review from the perspective of every actor in the threat model.
-12. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
-13. Run static analysers and review their output.
-14. Look at related projects and their audits to check for any similar issues or oversights.
-15. Try to figure out as many as expected invariants in the contract after getting its context.
-16. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
-17. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
-18. Comment the "why" as much as possible. 
-19. Comment the "what" if using obscure syntax or writing unconventional code.
-20. Comment explanations + example inputs/outputs next to complex and fixed point math.
-21. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
-22. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
-23. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
-24. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
+10. Do a generic line-by-line review of the contracts.
+11. While approaching a function, it is important that we take atleast one pair of input and calculate its output. This hardens our mental model.
+12. Do another review from the perspective of every actor in the threat model.
+13. Glance over the project's tests + code coverage and look deeper at areas lacking coverage.
+14. Run static analysers and review their output.
+15. Look at related projects and their audits to check for any similar issues or oversights.
+16. Try to figure out as many as expected invariants in the contract after getting its context.
+17. Try to avoid `transaction order dependence` in the code or find a way to deal with it.
+18. Try to anticipate what will occur when governance turns evil (this may be the case of the RUG PULL, EXIT SCAMS).
+19. Comment the "why" as much as possible. 
+20. Comment the "what" if using obscure syntax or writing unconventional code.
+21. Comment explanations + example inputs/outputs next to complex and fixed point math.
+22. Comment explanations wherever optimizations are done, along with an estimate of much gas they save.
+23. Comment explanations wherever certain optimizations are purposely avoided, along with an estimate of much gas they would/wouldn't save if implemented.
+24. We should always note all the privileges that are provided to any role and what actually the role can do, any difference in these two will be a vulnerability.
+25. Its a centralisation attack when there is given power to the owner to control funds of users in any case.
 
 ## Common questions to ask when we come across any general entity
 1. Will the contract run the same if this entity is removed?
@@ -202,72 +203,73 @@ _inspired from `transmisions11/Solcurity`_
 7. Use `block.timestamp` only for long intervals. (SWC-116)
 8. Don't use block.number for elapsed time. (SWC-116)
 9. Do not update the length of an array while iterating over it.
-10. Don't use `blockhash()`, etc for randomness. (SWC-120)
-11. Are signatures protected against replay with a nonce and `block.chainid`? (SWC-121)
-12. Ensure all signatures use EIP-712. (SWC-117 SWC-122)
-13. Output of `abi.encodePacked()` shouldn't be hashed if using >2 dynamic types. Prefer using `abi.encode()` in general. (SWC-133)
-14. Don't use any arbitrary data while using the assembly. (SWC-127)
-15. Don't assume a specific ETH balance. (SWC-132)
-16. Private data isn't private, it can be accessed. (SWC-136)
-17. Updating a struct/array in memory won't modify it in storage.
-18. Never shadow state variables. (SWC-119)
-19. Try not to mutate function parameters.
-20. Is calculating a value on the fly cheaper than storing it?
-21. Are all state variables read from the correct contract (master vs. clone)?
-22. Are comparison operators used correctly (`>`, `<`, `>=`, `<=`), especially to prevent off-by-one errors?
-23. Are logical operators used correctly (`==`, `!=`, `&&`, `||`, `!`), especially to prevent off-by-one errors?
-24. Always multiply before dividing, unless the multiplication could overflow.
-25. Are magic numbers replaced by a constant with an intuitive name?
-26. If the recipient of ETH had a fallback function that reverted, could it cause DoS? (SWC-113)
-27. Use SafeERC20 or check return values safely.
-28. Don't use `msg.value` if recursive `Delegate Calls` are possible (like if the contract inherits `Multicall`/`Batchable`).
-29. Don't assume `msg.sender` is always a relevant user.
-30. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
-31. Don't use `tx.origin` for authorization. (SWC-115)
-32. Don't use `address.transfer()` or `address.send()` or limiting the gas in low-level call. Use `.call.value(...)("")` instead. As these were used to save from reentrancy attacks since using them gives a constant supply of 2300 gas. But they have a problem that if in future, during some hardfork the gas is decreased then this will lead to the failure of the transaction as if the fallback function is a little bit of gas consuming then this will cause the transaction to fail.
-33. Also don't try to limit the gas too close for some common operations, the problem with this is that previous Ethereum hardforks have changed gas costs of commonly used opcodes (for example with EIP-150)
-34. It is also recommended to not use the transfer or send for transfering the native ETH while interacting with a smart contract.
-35. Prefer using `safeTransferFrom`, `safeMint` for `ERC20` and `ERC721` tokens
-36. When using low-level calls, ensure the contract exists before calling.
-37. When calling a function with many parameters, use the named argument syntax.
-38. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
-39. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
-40. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
-41. Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
-42. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
-43. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
-44. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
-45. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
-46. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
-47. Use ternary expressions to simplify branching logic wherever possible.
-48. When operating on more than one address, ask yourself what happens if they're the same.
-49. Can someone without spending other then gas fees change the state of the contract.
-50. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
-51. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
-52. You can always convert `bool` to `revert` by using `require` and `revert` to `bool` by using try/catch statement.
-53. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
-54. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
-55. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
-56. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
-57. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
-58. Don't use `ecrecover` and `signature` in general to verify the user as these cause signature malleability.
-59. While using `ecrocover`, the return value should also be checked to be non-zero(zero states invalid signature).
-60. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
-61. Look out for signature replay attacks.
-62. Use underscores or constants for number literals for better readability and also for unexpected human error.
-63. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
-64. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
+10. Try not to hardcode any parameter related to chain as this can fail after fork.
+11. Don't use `blockhash()`, etc for randomness. (SWC-120)
+12. Are signatures protected against replay with a nonce and `block.chainid`? (SWC-121)
+13. Ensure all signatures use EIP-712. (SWC-117 SWC-122)
+14. Output of `abi.encodePacked()` shouldn't be hashed if using >2 dynamic types. Prefer using `abi.encode()` in general. (SWC-133)
+15. Don't use any arbitrary data while using the assembly. (SWC-127)
+16. Don't assume a specific ETH balance. (SWC-132)
+17. Private data isn't private, it can be accessed. (SWC-136)
+18. Updating a struct/array in memory won't modify it in storage.
+19. Never shadow state variables. (SWC-119)
+20. Try not to mutate function parameters.
+21. Is calculating a value on the fly cheaper than storing it?
+22. Are all state variables read from the correct contract (master vs. clone)?
+23. Are comparison operators used correctly (`>`, `<`, `>=`, `<=`), especially to prevent off-by-one errors?
+24. Are logical operators used correctly (`==`, `!=`, `&&`, `||`, `!`), especially to prevent off-by-one errors?
+25. Always multiply before dividing, unless the multiplication could overflow.
+26. Are magic numbers replaced by a constant with an intuitive name?
+27. If the recipient of ETH had a fallback function that reverted, could it cause DoS? (SWC-113)
+28. Use SafeERC20 or check return values safely.
+29. Don't use `msg.value` if recursive `Delegate Calls` are possible (like if the contract inherits `Multicall`/`Batchable`).
+30. Don't assume `msg.sender` is always a relevant user.
+31. Don't use `assert()` unless for fuzzing or formal verification. (SWC-110)
+32. Don't use `tx.origin` for authorization. (SWC-115)
+33. Don't use `address.transfer()` or `address.send()` or limiting the gas in low-level call. Use `.call.value(...)("")` instead. As these were used to save from reentrancy attacks since using them gives a constant supply of 2300 gas. But they have a problem that if in future, during some hardfork the gas is decreased then this will lead to the failure of the transaction as if the fallback function is a little bit of gas consuming then this will cause the transaction to fail.
+34. Also don't try to limit the gas too close for some common operations, the problem with this is that previous Ethereum hardforks have changed gas costs of commonly used opcodes (for example with EIP-150)
+35. It is also recommended to not use the transfer or send for transfering the native ETH while interacting with a smart contract.
+36. Prefer using `safeTransferFrom`, `safeMint` for `ERC20` and `ERC721` tokens
+37. When using low-level calls, ensure the contract exists before calling.
+38. When calling a function with many parameters, use the named argument syntax.
+39. Do not use assembly for create2. Prefer the modern salted contract creation syntax.
+40. Do not use assembly to access chainId or contract code/size/hash. Prefer the modern Solidity syntax.
+41. Use the `delete` keyword when setting a variable to a zero value (`0`, `false`, `""`, etc).
+42. Comment explanations wherever `unchecked` is used, along with an estimate of how much gas it saves (if relevant).
+43. Do not depend on Solidity's arithmetic operator precedence rules. In addition to the use of parentheses to override default operator precedence, parentheses should also be used to emphasise it.
+44. Expressions passed to logical/comparison operators (`&&`/`||`/`>=`/`==`/etc) should not have side-effects.
+45. Wherever arithmetic operations are performed that could result in precision loss, ensure it benefits the right actors in the system, and document it with comments. 
+46. Document the reason why a reentrancy lock is necessary whenever it's used with an inline or `@dev` natspec comment.
+47. When fuzzing functions that only operate on specific numerical ranges use modulo to tighten the fuzzer's inputs (such as `x = x % 10000 + 1` to restrict from 1 to 10,000).
+48. Use ternary expressions to simplify branching logic wherever possible.
+49. When operating on more than one address, ask yourself what happens if they're the same.
+50. Can someone without spending other then gas fees change the state of the contract.
+51. Always check the number of loop iterations should be bounded by a small finite number other wise the transaction will run out of gas.
+52. Always check for the return datatype of the called contract function. Example: in ERC20 implementations, the transfer functions are not consistent with             the value they return(some return the bool while others revert which can cause problems)
+53. You can always convert `bool` to `revert` by using `require` and `revert` to `bool` by using try/catch statement.
+54. Similar to the above, global `transfer` method reverts while the `send` gives the bool value which sometimes causes problems
+55. Don't use `extcodesize` to gain the knowledge of whether the `msg.sender` is EOA as any contract calling the function while staying in the constructor can easily act as an EOA.
+56. Always try to be consistent with the interface contract otherwise the call will lead to the fallback.
+57. Making a new owner is a crucial thing, so a new function to accept the ownership should be made so that the ownership don't go in the hands of some wrong person or a smart contract which can not do anything.
+58. In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted. This can be exploited to hide malicious code.
+59. Don't use `ecrecover` and `signature` in general to verify the user as these cause signature malleability.
+60. While using `ecrocover`, the return value should also be checked to be non-zero(zero states invalid signature).
+61. delete every entry of the mapping before deleting the mapping itself, otherwise the getter function will still work by giving all the mapping values
+62. Look out for signature replay attacks.
+63. Use underscores or constants for number literals for better readability and also for unexpected human error.
+64. Use bytes.concat() instead of abi.encodePacked(), since this is preferred since 0.8.4
+65. Any inconsistency in formula for calculation may cause the loss of the funds and also minting additional funds,<br> 
           example can be use of Math.min(a, b) which change suddenly when the condition changes.
-65. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
-66. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
-67. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
-68. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
-69. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
-70. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
-71. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
-72. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
-73. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
-74. Some good practices to save some gas involve :
+66. Don't assume the implementations of ERC20, ERC721 tokens in their contracts, such as decimals, approve functions etc., coding using this assumption will lead to the casting errors
+67. Look for the statements that can be skipped and still takes to the same blockchain state, for example some external call without any return values, some non-relevant require statements.
+68. Try to read all the ERC20 Implementations in scope as their definitions can be different from what is expected.
+69. `Round Up` should be done while taking the tokens in so that no one can be privileged while depositing a lower amount.
+70. `Round down` should be done while transfering tokens from protocol to user so that no user can get the same value while having lower deposit.
+71. Use `PULL` over `PUSH` while updating the state variables to mitigate the inclusion of blacklisted entities to become active. This also uses gas only whenever necessary
+72. Try not to use the `percentage`, because it introduces the division and then rounding occurs. Also include a 100% cap while including a percentage.
+73. It is necessary to make the lines in constructor in proper order, this really affect the initial state of the protocol. Example. a function called inside the constructor takes value of an uninitialized variable, hence will fail to give correct output.
+74. A good practice while dealing with nonReentrant modifier. Try not to make the state variable public, instead make a public getter by yourself with a nonReentrant modifier.
+75. Some good practices to save some gas involve :
     - using ++i instead of i++
     - using calldata to load the info instead of memory
     - not equating with boolean inside the if-else statement
@@ -285,11 +287,11 @@ _inspired from `transmisions11/Solcurity`_
     - cheap way to store constants is to store them in library as an internal variable.
     - better to use uint256 instead of bool for using as a switch
     - use `e` instead writing power of 10 as `**`
-75. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
-76. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
-77. Lower size uints are actually less gas efficient. One exception is when packing the variables.
-78. Better not to use the dynamic array to save some space that would have been filled to store the length of that array.
-79. We can also simulate a transaction in a contract by making a function that simulates what is needed and also reverting on every result but with a custom message for each reason and can then be used in a `try and catch` statement to be able to have the results of the simulated transaction.
+76. The constants in solidity when assigned to a mathematical expression have a property to calculate its value everytime they are written to give the value. While the immutables don't have this property so this gives immutables a gas saving advantage while assigned to a mathematical expression e.g. 2*10e12
+77. If oracle is accessed using block number(to get historical data), then it should be mandatory to set the values only once per block.
+78. Lower size uints are actually less gas efficient. One exception is when packing the variables.
+79. Better not to use the dynamic array to save some space that would have been filled to store the length of that array.
+80. We can also simulate a transaction in a contract by making a function that simulates what is needed and also reverting on every result but with a custom message for each reason and can then be used in a `try and catch` statement to be able to have the results of the simulated transaction.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -315,7 +317,7 @@ _inspired from `transmisions11/Solcurity`_
 18. There is no guarantee for no revert of the transaction that is made to get the symbol, decimals for ERC20 if it is not inheriting the `IERC20Metadata.sol`, and tokenURI for ERC721 if it is not inheriting the `IERC721Metadata.sol`
 19. Consider supporting old NFTs and tokens before the ERC20 and ERC721 standard arrived. For example ERC20: WETH , ERC721: CryptoPunks, EtherRocks
 20. Solidity version 0.8.13 & 0.8.14 have a security vulnerability related to assembly blocks that write to memory, which are present in ERC20Plugins contract. The issue is fixed in version 0.8.15 and is explained [here](https://soliditylang.org/blog/2022/06/15/solidity-0.8.15-release-announcement/).
-21. The optimization done by making the functions payable(so no opcode is written to check whether the transaction has any value) also need a withdraw function other wise funds will be stuck. There are implementations of functions in @openzeppelin that are payable but not supposed to paid any value. Such as `ERC721AUpgradeable`, `ERC1967Proxy`, `BeaconProxy` etc.
+21. The optimization done by making the functions payable(so no opcode is written to check whether the transaction has any value) also need a withdraw function other wise funds will be stuck. There are implementations of functions in @openzeppelin that are payable but not supposed to paid any value. Such as `ERC721AUpgradeable`, `ERC1967Proxy`, `BeaconProxy` etc. This can be mitigated using a check `require(msg.value==0)`
 22. `WETH` contracts differ on different chains: transferFrom will work without allowance on Ethereum chain if the sender is an address that executes the function. But it will revert on some other chains like polygon due to the fact that they always subtract the allowance
    
 
@@ -396,6 +398,7 @@ _inspired from `transmisions11/Solcurity`_
 30. Contract should implement a way to take out the left over dust.
 31. Contracts that use `WETH` instead of `ETH`(or any two interchangeably used tokens) may have the invariant of ETH balance to be 0 or different logic to handle it. This can be a knob to exploit the invariants related to them.
 32. Is all the information that is stored conserved after any major change is happened. What happens to the state stored in the contracts that are stored in the contract address which is updated after some operation. For example the manager contract address if updated in the engine contract then what happens to all the information that is stored in the manager contract.
+33. EVM reverts if anyone redeploys a contract to the same address, however if the implementation contract contains self destruct logic, then attaackers can redeploy a new contract witt different bytecode to the same address through `cloneDeterministic`.
 
 ## Project
 
