@@ -59,6 +59,7 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
 - [ ] [@code4rena delegate](https://code4rena.com/contests/2023-09-delegate#top)
 - [ ] [@code4rena OpenDollar](https://code4rena.com/contests/2023-10-open-dollar#top)
+- [ ] [@code4rena Venus Prime](https://code4rena.com/reports/2023-05-venus)
 - [ ] @solodit reports
 
 
