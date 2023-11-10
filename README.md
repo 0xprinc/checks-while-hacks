@@ -60,6 +60,7 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [@code4rena delegate](https://code4rena.com/contests/2023-09-delegate#top)
 - [ ] [@code4rena OpenDollar](https://code4rena.com/contests/2023-10-open-dollar#top)
 - [ ] [@code4rena Venus Prime](https://code4rena.com/reports/2023-05-venus)
+- [ ] [@code4rena Ethena Labs](https://code4rena.com/contests/2023-10-ethena-labs#top)
 - [ ] @solodit reports
 
 
