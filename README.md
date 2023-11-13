@@ -50,6 +50,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov Pino - proxy interactions with DeFi protocols](https://github.com/pashov/audits/blob/master/solo/Pino-security-review.md)
 - [x] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [x] [@paladin sec LayerZero](https://paladinsec.co/projects/layerzero/)
+- [ ] [@pashov Pump - ERC20 launch platform](https://github.com/pashov/audits/blob/master/solo/Pump-security-review.md)
 - [ ] [@paladin Sec Ghast Protocol](https://paladinsec.co/projects/ghast-protocol/)
 - [ ] [@pashov Lumin - fixed-rate peer-to-peer lending](https://github.com/pashov/audits/blob/master/solo/Lumin-security-review.md)
 - [ ] [@cantina solady review](https://cantina.xyz/crowdfund/solady)
