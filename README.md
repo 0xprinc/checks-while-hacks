@@ -324,6 +324,7 @@ _inspired from `transmisions11/Solcurity`_
 20. Solidity version 0.8.13 & 0.8.14 have a security vulnerability related to assembly blocks that write to memory, which are present in ERC20Plugins contract. The issue is fixed in version 0.8.15 and is explained [here](https://soliditylang.org/blog/2022/06/15/solidity-0.8.15-release-announcement/).
 21. The optimization done by making the functions payable(so no opcode is written to check whether the transaction has any value) also need a withdraw function other wise funds will be stuck. There are implementations of functions in @openzeppelin that are payable but not supposed to paid any value. Such as `ERC721AUpgradeable`, `ERC1967Proxy`, `BeaconProxy` etc. This can be mitigated using a check `require(msg.value==0)`
 22. `WETH` contracts differ on different chains: transferFrom will work without allowance on Ethereum chain if the sender is an address that executes the function. But it will revert on some other chains like polygon due to the fact that they always subtract the allowance
+23. Aptos uses 32-byte addresses. similiarly non-EVM chains use the different address sizes, better not to hardcode the address size in case of bridges.
    
 
 ## External Calls
