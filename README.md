@@ -50,6 +50,7 @@ _inspired from `transmisions11/Solcurity`_
 - [x] [@pashov Pino - proxy interactions with DeFi protocols](https://github.com/pashov/audits/blob/master/solo/Pino-security-review.md)
 - [x] [@code4rena Basin Composable EVM](https://code4rena.com/contests/2023-07-basin#top)
 - [x] [@paladin sec LayerZero](https://paladinsec.co/projects/layerzero/)
+- [x] [@code4rena OpenDollar](https://code4rena.com/contests/2023-10-open-dollar#top)
 - [ ] [@zobront obol protocol](https://github.com/zobront/audits/blob/main/reports/obol.md)
 - [ ] [@zobront nouns agora](https://github.com/zobront/audits/blob/main/reports/alligator.md)
 - [ ] [@pashov Pump - ERC20 launch platform](https://github.com/pashov/audits/blob/master/solo/Pump-security-review.md)
@@ -61,7 +62,6 @@ _inspired from `transmisions11/Solcurity`_
 - [ ] [@code4rena veRWA](https://code4rena.com/contests/2023-08-verwa#top)
 - [ ] [@code4rena Livepeer Onchain Treasury Upgrade](https://code4rena.com/contests/2023-08-livepeer-onchain-treasury-upgrade#top)
 - [ ] [@code4rena delegate](https://code4rena.com/contests/2023-09-delegate#top)
-- [ ] [@code4rena OpenDollar](https://code4rena.com/contests/2023-10-open-dollar#top)
 - [ ] [@code4rena Venus Prime](https://code4rena.com/reports/2023-05-venus)
 - [ ] [@code4rena Ethena Labs](https://code4rena.com/contests/2023-10-ethena-labs#top)
 - [ ] @solodit reports
@@ -297,6 +297,7 @@ _inspired from `transmisions11/Solcurity`_
 78. Lower size uints are actually less gas efficient. One exception is when packing the variables.
 79. Better not to use the dynamic array to save some space that would have been filled to store the length of that array.
 80. We can also simulate a transaction in a contract by making a function that simulates what is needed and also reverting on every result but with a custom message for each reason and can then be used in a `try and catch` statement to be able to have the results of the simulated transaction.
+81. The implementation of the IERC interfaces should be strictly following the standards of ERC, otherwise this will be difficult to integrate this with the other contracts. For example : `tokenURI(uint256 tokenId)` function in ERC721 should revert(and not just return) if the `tokenId` is not minted yet.
  
 
 ## Unexpected implementations and Outputs from already deployed contracts
@@ -466,6 +467,7 @@ includes : structuring to avoid AML/CTF, token inflation, fake trends, smurfing,
 44. `FlashLoan` can be related to a `zero duration loan in borrowing and lending protocol` if the interest amount is starts from zero, but the collateral will be required to take the loan.
 45. Always take care of the dust amount as it can make the equality to inequality and also makes the system DOS while playing around the corners of the inequality. [Example](https://twitter.com/0xprinc/status/1691053853050085376)
 46. The receiver of the collateral should not be always same as the recepient of the collateral or not always be specified by the one who pays the loan as this will make any person to pay the debt and take away the collateral as the collateral contains more value.
+47. In case of implementing the timelock in the fast chains such as Arbitrum(blocktime ~= 0.26 seconds), it is infeasible to set the delay in terms of number of blocks.
     
 ## After Transaction
 1. The transaction data can be seen by anyone reading the mempool, so don't use things like password in the transactions.
