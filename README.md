@@ -388,7 +388,7 @@ _inspired from `transmisions11/Solcurity`_
 15. Group imports by their folder/package. Separate groups with an empty line. Groups of external dependencies should come first, then mock/testing contracts (if relevant), and finally local imports.
 16. Summarize the purpose and functionality of the contract with a `@notice` natspec comment. Document how the contract interacts with other contracts inside/outside the project in a `@dev` natspec comment.
 17. Malicious actors can use the Right-To-Left-Override unicode character to force RTL text rendering and confuse users as to the real intent of a contract.
-18. Try to take into account the c3 linearization when inheriting from two contracts that contain same function with different implementations
+18. Try to take into account the c3 linearization(MRO(method resolution order)) when inheriting from two contracts that contain same function with different implementations
           (diamond problem)
 19. The callable functions in a contract are not only the ones visible in the contract code but also the ones which are inherited but are not mentioned in the code itself.
 20. Its a good practice to include the [headers](https://github.com/transmissions11/headers)
